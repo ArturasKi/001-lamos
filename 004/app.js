@@ -37,9 +37,10 @@ const nPlus = [
 
 console.table(nPlus);
 
-console.log(nPlus[1][0]); // pirmas stulpelis, antras eilute
-console.log(nPlus[3][2]);
+// console.log(nPlus[1][0]); // pirmas stulpelis, antras eilute
+// console.log(nPlus[3][2]);
 
+console.log("FOR'AS FOR'E PVZ");
 
 for (let i = 0; i < nPlus.length; i++) {
 
@@ -50,6 +51,32 @@ for (let i = 0; i < nPlus.length; i++) {
     }
 }
 
+console.log('FOR EACH PVZ');
 
+nPlus.forEach(m => {
+    m.forEach(k => console.log(k));
+});
+
+function rand(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+const naujasNamas = [];
+
+for (let i = 0; i < 10; i++) {
+    const aukstas = [];
+    for (let j = 0; j < 10; j++) {
+        aukstas.push(rand(10, 99));
+    }
+    naujasNamas.push(aukstas);
+}
+
+console.table(naujasNamas);
+
+// for (let i = 0; i < 10; i++) {
+//     naujasNamas.push(rand(10, 99));
+// }
 
 
