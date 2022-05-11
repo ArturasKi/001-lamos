@@ -53,3 +53,58 @@ for (let i = 2; i < 10; i++) {
 }
 
 console.table(ma);
+
+// OBJEKTAI
+
+const kazkas = 'kansdladasd';
+
+const namasSuKaminu = {
+    kaminas: 'yra 3 metrai',
+    gyventojai: ['Petras', 'Asilas', 'Barsukas', 'Kate'],
+    tas: kazkas
+};
+
+namasSuKaminu.animals = {cat: 'Murka', dog: 'Brisius'};
+
+namasSuKaminu.tas = 888;
+
+console.log(namasSuKaminu.animals.cat);
+
+// const namasSuKaminu2 = namasSuKaminu; // lieka tas pats objektas su dviem vardais
+
+const namasSuKaminu2 = JSON.parse(JSON.stringify(namasSuKaminu)); // kopijuoja objekta;
+
+namasSuKaminu2.animals.cat = 'Kitas katinas';
+
+console.log(namasSuKaminu.animals.cat);
+
+// const n4 = n1.slice(); // 'slice' padaro totaliai atskira nama - tikra kopija, naudojamas tik masyvo kopijavimui;
+const n4 = [...n1]; // kopijavimas;
+
+// n4.shift();
+
+const a1 = {cat: 'Murka', dog: 'Brisius'};
+const a2 = {...a1}; // ... - destruktorius (isardo i gabalus);
+
+console.log(n1);
+console.log(n4);
+
+console.log(namasSuKaminu, namasSuKaminu2);
+
+// MAP - objektas;
+
+const map = new Map();
+
+map.set('Murka', 5); // unikalus
+map.set('Pilkis', 8);
+map.set('Pukis', 4);
+
+console.log(map.get('Pilkis'));
+console.log(map.has('Pilkis'));
+// map.delete('Pilkis'); // istrina
+
+const masmap = [...map]; // sukuriam masyva is map;
+
+console.log(masmap);
+console.log(map.size);
+
