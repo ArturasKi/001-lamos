@@ -22,6 +22,8 @@ n.unshift('Pele'); // visada 0, iterpia i 0 ir nustumia kitus i prieki;
 
 console.table(n);
 
+console.log(n[3][2]);
+
 console.log(n.length);
 
 for (let i = 0; i < n.length; i++) {
@@ -54,7 +56,9 @@ for (let i = 0; i < nPlus.length; i++) {
 console.log('FOR EACH PVZ');
 
 nPlus.forEach(m => {
-    m.forEach(k => console.log(k));
+    m.forEach(k => {
+        console.log(k)
+    });
 });
 
 function rand(min, max) {
@@ -75,7 +79,7 @@ for (let i = 0; i < 10; i++) {
 
 console.table(naujasNamas);
 
-// for (let i = 0; i < 10; i++) {
+// for (let i = 0; i < 100; i++) {
 //     naujasNamas.push(rand(10, 99));
 // }
 
