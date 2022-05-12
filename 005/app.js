@@ -108,3 +108,19 @@ const masmap = [...map]; // sukuriam masyva is map;
 console.log(masmap);
 console.log(map.size);
 
+// SET - galima deti tik unikalias reiksmes, jei bus vienodos rezultatas nepasikeis.
+
+const se = new Set();
+
+const va = [4, 8, 2, 7, 7, 4];
+    
+console.log(new Set(va));
+
+se.add({t: 'cat'});
+se.add('dog');
+se.add({t: 'cat'});
+se.delete('dog');
+
+console.log(se);
+console.log(se.has('dog'));
+console.log(se.has({t: 'cat'}));
