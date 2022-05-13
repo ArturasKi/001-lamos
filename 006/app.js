@@ -78,3 +78,68 @@ du();
 
 const dudu = y => 'As streline funckija DUDU.';
 console.log(dudu());
+
+// const fancy = () => {
+//     return kita = () => {
+//         console.log('labas');
+//     }
+// }
+
+const fancy = () => () => console.log('labas');
+
+const ja = fancy();
+
+ja();
+
+// CALLBACK - funkcija, kuri i parametra perduodama kaip argumentas;
+const array1 = ['a', 'b', 'c'];
+
+function alio(element) {
+    console.log(element);
+}
+array1.forEach(alio); // 1 var
+
+array1.forEach((element, i) => console.log(element, i)); // 2 var
+
+
+const dvimatis = [
+    [2, 3, 0, 8, 0],
+    [7, 3, 8, 5, 6],
+    [9, 3, 9, 8, 0],
+    [1, 7, 8, 8, 9],
+];
+
+dvimatis.forEach(r => r.forEach(n => console.log(n)));
+
+
+const cat = {
+    name: 'pilkis',
+    voice: function() { console.log('Miauuuuu says ' + this.name)} // 'this' naudojamas objekto viduje (tokio tipo funkcijoje).
+}
+
+cat.voice();
+
+
+// Savybes, kurios yra funkcijos vadinamos metodais;
+
+
+// SORT
+// A, B -> T 1;
+// A, B -> N -1;
+// A, B -> 0;
+
+const n = ['Petras', 'Asilas', 'Barsukas', 'Kate'];
+
+n.sort((a, b) => {
+    if (a > b) {
+        return -1;
+    }
+    if (a < b) {
+        return 1;
+    }
+    return 0;
+});
+
+console.table(n);
+
+
