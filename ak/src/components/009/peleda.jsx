@@ -1,9 +1,9 @@
-function Peleda() {
-const xzz = 33;
+function Peleda({skaicius}) {
+const xzz = 3;
     return (
         <>
             <h3>Peleda</h3>
-            <span>Megsta skraidyti { xzz > 20 ? 'daug' : 'ne daug' } kartų per diena.</span>
+            <span>Megsta skraidyti {skaicius + 11 + xzz} kartų per diena.</span>
         </>
     );
 }

@@ -1,10 +1,10 @@
-function Hello() {
+function Hello({spalva, bg}) {
 
     return (
         <h2 style={
             {
-                color: 'pink',
-                backgroundColor: 'green',
+                color: spalva,
+                backgroundColor: bg,
                 padding: '10px'
             }
         }>Hello</h2>
