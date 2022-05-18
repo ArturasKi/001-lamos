@@ -153,5 +153,4 @@ while(yesOrNo(whiteCat)) {
     whiteCat.push(rand(1, 33));
 }
 
-
 console.log(whiteCat);
