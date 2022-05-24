@@ -6,7 +6,7 @@ function User({user}) {
     return (
         <>
             {
-                user.map(b => <div key={b.id}>{b.name}</div>)
+                user.map(b => <div key={b.id} style={{color: b.color}}>{b.name}</div>)
             }
         </>
     );   

@@ -1,5 +1,5 @@
 function Daiktas({seaPlaner}) {
-    return <div><i>ID:{seaPlaner.id} <b>{seaPlaner.name}</b></i></div>
+    return <div style={{color: seaPlaner.color}}><i>ID:{seaPlaner.id} <b>{seaPlaner.name}</b></i></div>
 }
 
 export default Daiktas;

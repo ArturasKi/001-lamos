@@ -15,7 +15,7 @@ function Jura({seaPlaners}) {
                 seaPlaners.map(p => <Sala key={p.id} seaPlaner={p}></Sala>)
             }
             {
-                seaPlaners.map(p => p.type === 'fish' ? <div key={p.id} seaplaner={p}>TYPE:{p.type}<b> {p.name}</b></div> : null)
+                seaPlaners.map(p => p.type === 'fish' ? <div key={p.id} seaplaner={p} style={{color: p.color}}>TYPE:{p.type}<b> {p.name}</b></div> : null)
             }
         </>
     );
