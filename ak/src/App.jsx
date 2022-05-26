@@ -1,45 +1,30 @@
 import { useState } from 'react';
 import './App.scss';
-import randColor from './functions/randColor';
-import { v4 as uuidv4 } from 'uuid'; // standartinis random string'as;
 
 
 function App() {
 
-  const [avys, setAvys] = useState([]);
+  const [text, setText] = useState(''); //kontroliuojamoji forma: text => input value={text}; setText kontroliuoja text value;
 
-  const newA = () => {
-    const avis = {id: uuidv4(), color: randColor(), where: 'ganykla'};
-    setAvys(a => [...a, avis]);
-  }
+  const [select, setSelect] = useState('');
 
-  const go = id => {
-    setAvys (a => {
-      const avis = a.filter(av => av.id === id)[0];
-      avis.where = 'kirpykla';
-      const kitos = a.filter(av => av.id !== id);
-      return [...kitos, avis];
-    }) // avis pridedama i gala;
+  const inputText = e => {
+    setText(e.target.value); // setText(e.target.value + '*');
+  } // kontroliuojamos formos funkcija, kontroliuojamas ivedamas tekstas;
 
-
-    // setAvys(a => a.map(avis => avis.id === id ? {...avis, where: 'kirpykla'} : avis)); // nekeicia avies vietos, pereina i ta pacia vieta is kurios paimama;
-  }
- 
   return (
     <div className="App">
       <header className="App-header">
-        <div className='kvc' style={{background: 'blue'}}>
-          {
-            avys.filter(a => a.where === 'kirpykla').map(a => <div onClick={() => go(a.id)}  className="kv" key={a.id} style={{background: a.color}}>{a.id}</div>)
-          }
-        </div>
-        <h1>AVYS</h1>
-        <div className='kvc' style={{background: 'blue'}}>
-          {
-            avys.filter(a => a.where === 'ganykla').map(a => <div onClick={() => go(a.id)} className="kv" key={a.id} style={{background: a.color}}>{a.id}</div>)
-          }
-        </div>
-        <button onClick={newA}>Naujas Avinas</button>
+        <h1>FORMOS</h1>
+
+        <input type='text' onChange={inputText} value={text}></input>
+        <select value={select} onChange={e => setSelect(e.target.value)}>
+          <option value='one'>Vienas</option>
+          <option value='two'>Du</option>
+          <option value='three'>Three</option>
+          <option value='ten'>Ten</option>
+        </select>
+
       </header>
     </div>
   );
