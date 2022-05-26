@@ -45,7 +45,9 @@
   height: 77px;
   background-color: crimson;
   margin: 7px;
+  padding: 10px;
   border-radius: 7px;
+  font-size: 12px;
 }
 
 .kvc {
@@ -58,6 +60,7 @@
 button {
   display: flex;
   align-items: center;
+  margin-top: 20px;
   font-family: inherit;
   font-weight: 500;
   font-size: 20px;
