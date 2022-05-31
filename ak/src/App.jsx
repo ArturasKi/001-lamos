@@ -8,6 +8,8 @@ import { create, read } from './functions/localStorage';
 
 function App() {
 
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
+
   const [exes, setExes] = useState(null);
 
   const [createData, setCreateData] = useState(null); // null, nes pradzioj jokio objekto nera;
@@ -15,7 +17,7 @@ function App() {
   // READ
   useEffect(() => {
     setExes(read());
-  }, []);
+  }, [lastUpdate]);
 
   // 1. CREATE
   useEffect(() => {
@@ -23,6 +25,7 @@ function App() {
       return;
     }
     create(createData);
+    setLastUpdate(Date.now());
   // IŠSIUNČIAMAS Į LOCALSTORAGE;
   }, [createData]);
 
