@@ -1,0 +1,29 @@
+.list-group-item {
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        };
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        b {
+            margin-right: 15px;
+        }
+        i {
+            margin-left: 15px;
+        }
+    }
+}
+
+.modal {
+    display: block;
+    background-color: rgba(11, 63, 95, 0.5);
+}

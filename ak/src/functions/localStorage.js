@@ -22,3 +22,14 @@ export function read() {
     data = JSON.parse(data);
     return data;
 }
+
+export function remove({id}) {
+    let data = localStorage.getItem(key);
+    if (null === data) {
+        data = JSON.stringify([]); // jei nera ka nuskaityt atiduoda tuscia masyva (duomenis)
+    }
+    data = JSON.parse(data);
+    data = data.filter(obj => obj.id !== id); // istrina
+    data = JSON.stringify(data); // paverciam i stringa kad galetume prirasyt
+    localStorage.setItem(key, data); // i local storage
+}
