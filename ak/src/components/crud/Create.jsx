@@ -1,14 +1,19 @@
 import { useState } from 'react';
 
 
-function Create() {
+function Create({setCreateData}) {
 
     const [name, setName] = useState('');
     const [type, setType] = useState(1);
     const [place, setPlace] = useState('');
 
-
-
+    const handleCreate = () => {
+      const data = {name, type, place};
+      setCreateData(data);
+      setName('');
+      setType('1');
+      setPlace('');
+    }
 
     return (
         <div className="card mt-4">
@@ -35,7 +40,7 @@ function Create() {
                 <input type="text" className="form-control" value={place} onChange={e => setPlace(e.target.value)}></input>
                 <small className="form-text text-muted">Enter Ex place here.</small>
               </div>
-              <button type="button" className="btn btn-outline-primary">Create</button>
+              <button type="button" className="btn btn-outline-primary" onClick={handleCreate}>Create</button>
             </div>
           </div>
     )
