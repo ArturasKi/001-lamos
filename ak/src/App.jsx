@@ -3,7 +3,7 @@ import './bootstrap.css';
 import './crud.scss'
 import Create from './components/crud/Create';
 import List from './components/crud/List';
-import { create, read, remove } from './functions/localStorage';
+import { create, read, remove, edit } from './functions/localStorage';
 import Edit from './components/crud/Edit';
 // import './App.scss';
 
@@ -12,9 +12,12 @@ function App() {
 
   const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [exes, setExes] = useState(null);
+  
+  const [modalData, setModalData] = useState(null);
+
   const [createData, setCreateData] = useState(null); // null, nes pradzioj jokio objekto nera;
   const [deleteData, setDeleteData] = useState(null);
-  const [modalData, setModalData] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   // READ
   useEffect(() => {
@@ -41,6 +44,16 @@ function App() {
   // IŠSIUNČIAMAS Į LOCALSTORAGE;
   }, [deleteData]);
 
+  // EDIT
+  useEffect(() => {
+    if (null === editData) {
+      return;
+    }
+    edit(editData);
+    setLastUpdate(Date.now());
+  // IŠSIUNČIAMAS Į LOCALSTORAGE;
+  }, [editData]);
+
 
   return (
     <>
@@ -54,7 +67,7 @@ function App() {
           </div>
         </div>
       </div>
-      <Edit modalData={modalData} setModalData={setModalData}></Edit>
+      <Edit setEditData={setEditData} modalData={modalData} setModalData={setModalData}></Edit>
     </>
   );
 }

@@ -33,3 +33,15 @@ export function remove({id}) {
     data = JSON.stringify(data); // paverciam i stringa kad galetume prirasyt
     localStorage.setItem(key, data); // i local storage
 }
+
+// redaguojama su map, map padarys kopijas visu, redaguojamas bus pakeistas;
+export function edit(obj) {
+    let data = localStorage.getItem(key);
+    if (null === data) {
+        data = JSON.stringify([]);
+    }
+    data = JSON.parse(data);
+    data = data.map(oldObject => oldObject.id !== obj.id ? oldObject : obj);
+    data = JSON.stringify(data);
+    localStorage.setItem(key, data);
+}

@@ -12,8 +12,9 @@ function Ex({ex, setDeleteData, setModalData}) {
         <li className="list-group-item">
             <div className="item">
                 <div className="content">
+                    <b>ID: {ex.id}</b>
                     <b>{ex.name}</b>
-                    <span>{['Test', 'Written', 'Spoken'][--ex.type]}</span>
+                    <span>{['Test', 'Written', 'Spoken'][ex.type - 1]}</span>
                     <i>{ex.place}</i>
                 </div>
                 <div className="buttons">
