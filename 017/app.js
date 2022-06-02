@@ -157,7 +157,83 @@ keleiviai.vaziuoja();
 // 6. Patobulinti 2 uždavinio piniginę taip, kad būtų galima skaičiuoti kiek piniginėje yra monetų ir kiek banknotų. Parašyti metodą monetos(), kuris skaičiuotų kiek yra piniginėje monetų ir metoda banknotai() - popierinių pinigų skaičiavimui. Kiekvieną atskirą dėjimą (ideti(kiekis) metodo kvietimą) laikykite vienu banknotu ar viena moneta.
 console.log('Uzduotis #6 -> žr. #2');
 
-// 8. Sukurti klasę Stikline. Sukurti savybes turis ir kiekis. Turis turi būti pasirenkamas objekto kūrimo metu. Parašyti metodą ipilti(kiekis), kuris keistų savybę kiekis. Jeigu stiklinės tūris yra mažesnis nei pilamas kiekiskiekis netelpa ir būna lygus tūriui. Parašyti metodą ispilti(), kuris grąžiną kiekį. Pilant išpilamas visas kiekis, tas kas netelpa, nuteka per stalo viršų. Sukurti metodą stiklinejeYra(), kuris į konsolę atspausdintų kiek stiklinėje yra skysčio. Sukurti tris stiklinės objektus su tūriais: 200, 150, 100. Didžiausią pripilti pilną ir tada ją ispilti į mažesnę stiklinę, o mažesnę į dar mažesnę.
+// 8. Sukurti klasę Stikline. Sukurti savybes turis ir kiekis. Turis turi būti pasirenkamas objekto kūrimo metu. Parašyti metodą ipilti(kiekis), kuris keistų savybę kiekis. Jeigu stiklinės tūris yra mažesnis nei pilamas kiekis netelpa ir būna lygus tūriui. Parašyti metodą ispilti(), kuris grąžiną kiekį. Pilant išpilamas visas kiekis, tas kas netelpa, nuteka per stalo viršų. Sukurti metodą stiklinejeYra(), kuris į konsolę atspausdintų kiek stiklinėje yra skysčio. Sukurti tris stiklinės objektus su tūriais: 200, 150, 100. Didžiausią pripilti pilną ir tada ją ispilti į mažesnę stiklinę, o mažesnę į dar mažesnę.
 console.log('Uzduotis #8');
+
+class Stikline {
+    constructor(t) {
+        this.turis = t;
+        this.kiekis = 0;
+    }
+    ipilti = (kiekis) => {
+        this.kiekis = Math.min(this.turis, this.kiekis + kiekis);
+        return this;
+        // this.turis < kiekis ? console.log(`Įpiltas kiekis: ${this.turis}`) : console.log(`Įpiltas kiekis: ${this.kiekis += kiekis}`);
+    }
+    ispilti = () => {
+        const kiek = this.kiekis;
+        this.kiekis = 0;
+        return kiek;
+        // this.turis < this.kiekis ? console.log(`Išpiltas kiekis: ${this.turis}`) : console.log(`Išpiltas kiekis: ${this.kiekis}`);
+    }
+    stiklinejeYra = () => {
+        console.log(`Stiklinėje yra: ${this.turis} ml yra ${this.kiekis} pepsio.`);
+    }
+}
+
+const stikline1 = new Stikline(200);
+const stikline2 = new Stikline(150);
+const stikline3 = new Stikline(100);
+
+stikline3.ipilti(stikline2.ipilti(stikline1.ipilti(80).ispilti()).ispilti());
+
+
+// stikline1.ipilti(1000);
+// stikline2.ipilti(stikline1.ispilti());
+// stikline3.ipilti(stikline2.ispilti());
+
+stikline1.stiklinejeYra();
+stikline2.stiklinejeYra();
+stikline3.stiklinejeYra();
+
+
+// 9. Sukurti klasę Grybas. Sukurti klasę Krepsys. Krepsys turi savybę dydis,kuriai konstruktoriuje yra priskiriama reikšmė 500 ir savybę prikrauta (kuri pradžioje lygi 0). Grybas turi tris savybes, kurios taip pat yra paskaičiuojamos konstruktoriuje: valgomas, sukirmijes, svoris. Kuriant Grybo objektą jo savybės turi būti atsitiktinai (rand funkcija) priskiriamos taip: valgomas- true arba false, sukirmijes- true arba false ir svoris- nuo 5 iki 45. Eiti grybauti, t.y. Kurti naujus Grybas objektus, jeigu nesukirmijęs ir valgomas dėti į Krepsi objektą, t.y. Vykdyti deti(grybas) metodą kol bus pririnktas pilnas krepšys nesukirmijusių ir valgomų grybų (gali būti truputį daugiau nei dydis).
+console.log('Uzduotis #9');
+
+const sample = arr => arr[Math.floor(Math.random() * arr.length)];
+const random = sample([true, false]);
+const random1 = sample([true, false]);
+
+function rand(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+class Grybas {
+    constructor() {
+        this.valgomas = random;
+        this.sukirmijes = random1;
+        this.svoris = rand(5, 45);
+        console.log(`Valgomas: ${this.valgomas}, sukirmijęs: ${this.sukirmijes}, svoris: ${this.svoris}`);
+    }
+}
+
+class Krepsys {
+    constructor() {
+        this.dydis = 500;
+        this.prikrauta = 0;
+        console.log(this.dydis)
+    }
+}
+
+const grybas1 = new Grybas();
+const grybas2 = new Grybas();
+
+
+
+
+
+
 
 
