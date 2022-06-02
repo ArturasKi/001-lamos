@@ -223,14 +223,17 @@ class Krepsys {
     constructor() {
         this.dydis = 500;
         this.prikrauta = 0;
-        console.log(this.dydis)
+
+    }
+    deti(grybas) {
+
     }
 }
 
 const grybas1 = new Grybas();
 const grybas2 = new Grybas();
 
-
+new Krepsys(grybas1);
 
 
 
