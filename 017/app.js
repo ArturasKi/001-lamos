@@ -308,56 +308,45 @@ const sample = arr => arr[Math.floor(Math.random() * arr.length)];
 const random = sample([true, false]);
 const random1 = sample([true, false]);
 
-function rand(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
+
 
 class Grybas {
 
     constructor() {
-        this.valgomas = random;
-        this.sukirmijes = random1;
-        this.svoris = rand(5, 45);
+        this.valgomas = !this.rand(0, 1);
+        this.sukirmijes = !this.rand(0, 1);
+        this.svoris = this.rand(5, 45);
         console.log(`Valgomas: ${this.valgomas}, sukirmijęs: ${this.sukirmijes}, svoris: ${this.svoris}`);
+    }
+    rand(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 }
 
-class Krepsys extends Grybas {
+class Krepsys {
 
     constructor() {
-        super()
         this.dydis = 500;
         this.prikrauta = 0;
     }
     
     deti(grybas) {
-        return this.constructor.prikrauta += grybas;
+        if (grybas.valgomas && !grybas.sukirmijes) {
+            this.prikrauta += grybas.svoris;
+        }
+        return this.prikrauta < this.dydis; 
     } 
 }
 
+const krepsys = new Krepsys();
 
-const grybas = new Krepsys();
+while(krepsys.deti(new Grybas())){}
 
-grybas.deti(1);
-
-console.log()
-
-
-let grybuKiekis = 0;
+console.log(krepsys);
 
 
-if (grybas.valgomas === 'true' && grybas.sukirmijes === 'false') {
-    do {
-        grybuKiekis++;
-    } while (grybas.dydis < grybas.prikrauta);
-}
-
-console.log(grybuKiekis);
-console.log(grybas.valgomas);
-console.log(grybas.dydis);
-console.log(grybas.prikrauta);
 
 
 
