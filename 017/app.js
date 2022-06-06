@@ -71,7 +71,7 @@ class Kibiras1 {
     }
 
     static akmenuSkaiciusVisuoseKibiruose() {
-        console.log(`Iš viso kibiruose yra ${this.visiAkmenys} akmenys.`)
+        console.log(`Iš viso kibiruose yra ${this.visiAkmenys} akmenys.`);
     }
 
     constructor() {
