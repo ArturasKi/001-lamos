@@ -1,107 +1,79 @@
 import './App.scss';
 import { useReducer, useState } from 'react';
-import colorReducer from './Reducers/colorReducer';
-import numberReducer from './Reducers/numberReducer';
-import rand from './Functions/rand';
-import kvReducer from './Reducers/kvReducer';
-
+import randNumberReducer from './Reducers/randNumberReducer';
 
 function App() {
 
-  // const [color, setColor] = useState('yellow');
-  const [color, dispatchColor] = useReducer(colorReducer, 'yellow');
-  const [number, dispatchNumber] = useReducer(numberReducer, '0000');
-  const [kvadratas, dispatchKvadratas] = useReducer(kvReducer, []);
-  const [formColor, setFormColor] = useState('#484121');
-  const [tekstas, setTekstas] = useState('');
-  const [h2, setH2] = useState('');
-  // const [kv, setKv] = useState([]);
+  const [list, dispatchList] = useReducer(randNumberReducer, []);
+  const [listNr, setListNr] = useState([]);
 
-
-    const goPink = () => {
-      const action = {
-        type: 'go_pink'
-      }
-      dispatchColor(action);
-  }
-
-    const goYellow = () => {
-      const action = {
-        type: 'go_yellow'
-      }
-      dispatchColor(action);
-  }
-
-    const changeColor = () => {
-      const action = {
-        type: 'go_change'
-      }
-      dispatchColor(action);
-  }
-
-  const goRand = () => {
+  
+  const addList = () => {
+    setListNr(listNr)
     const action = {
-      type: 'go_rand'
+      type: 'add_list',
     }
-    dispatchNumber(action); // paspaudus mygtuką, išsiunčiamas action į funkciją;
+    dispatchList(action);
   }
-
-  const goRand1 = () => {
+  
+  const sortList = () => {
+    setListNr(listNr)
     const action = {
-      type: 'go_rand1',
-      payload: rand(0, 100)
+      type: 'sort_list',
     }
-    dispatchNumber(action);
+    dispatchList(action);
   }
-
-  const background = () => {
+  
+  const daugiauList = () => {
+    setListNr(listNr)
     const action = {
-      type: 'change_background',
-      payload: formColor
+      type: 'daugiau_list',
     }
-    dispatchColor(action);
-}
-
-  const textClick = () => {
-
-    setH2(tekstas);
-    const action = {
-      type: 'change_text',
-      payload: tekstas
-    }
-    dispatchColor(action);
-}
-
-const addKv = () => {
-  const action = {
-    type: 'add_kv',
+    dispatchList(action);
   }
-  dispatchKvadratas(action);
-}
+  
+  const maziauList = () => {
+    setListNr(listNr)
+    const action = {
+      type: 'maziau_list',
+    }
+    dispatchList(action);
+  }
+  
+  const grazintiList = () => {
+    setListNr(listNr)
+    const action = {
+      type: 'grazinti_list',
+    }
+    dispatchList(action);
+  }
+  
+  const defList = () => {
+    setListNr(listNr)
+    const action = {
+      type: 'def_list',
+    }
+    dispatchList(action);
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <h2>{h2}</h2>
-        <h1 style={{backgroundColor: color}}>Welcome to useReducer()</h1>
-        <span> {number} </span>
-        <button onClick={goRand}>Random 1</button>
-        <button onClick={goRand1}>Random 2</button>
         <div className='kvc'>
-          <button onClick={goPink}>Go Pink</button>
-          <button onClick={goYellow}>Go Yellow</button>
-          <button onClick={changeColor}>Change Color</button>
-          <br/>
-          <input onChange={e => setFormColor(e.target.value)} type='color' value={formColor}></input>
-          <button onClick={background}>Change background</button>
-          <input type='text' onChange={e => setTekstas(e.target.value)} value={tekstas}></input>
-          <button onClick={textClick}></button>
+          <h1>Reducer</h1>
         </div>
-        <button onClick={addKv}>Add []</button>
         <div className='kvc'>
           {
-            kvadratas.map((c, i) => <div className='kv' key={i} style={{backgroundColor: c}}>{i}</div>)
+            list.map((o, i) => o.show ? <div key={i} className="kv"><i>{o.number}</i></div> : null)
           }
+        </div>
+        <div className='kvc'>
+          <button onClick={addList}>10</button>
+          <button onClick={sortList}>Sort</button>
+          <button onClick={daugiauList}>5000</button>
+          <button onClick={maziauList}>4000</button>
+          <button onClick={grazintiList}>Grazinti</button>
+          <button onClick={defList}>DefSort</button>
         </div>
       </header>
     </div>
@@ -110,10 +82,7 @@ const addKv = () => {
 
 export default App;
 
-// 1000, 9999
+// 1. (useReducer) Mygtukas, kai jį paspaudžiam atsiranda list'as iš 10 random skaičių. Reducer'io viduje sugeneruojamas masyvas iš 10 skaičių.
+// {number: '0025', color: #9494df};
 
-// Sukurti color input'ą. Kontroliuoti su useState
-// Mygtukas, paspaudus pasikeičia background color.
-// Input color perduodamas per payload'ą;
-
-// Input kontroliuojamas is state -> payload -> reducer.
+// Du mygtukai: vienas turėtų rodyti didesnius nei 5000, kitas - mažesnius nei 4000.

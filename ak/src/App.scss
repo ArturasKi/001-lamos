@@ -51,6 +51,7 @@
 
 .kvc {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
@@ -75,6 +76,7 @@ button {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  margin: 5px;
 }
 
 button:hover {
