@@ -1,148 +1,63 @@
+import { useEffect, useReducer } from 'react';
 import './App.scss';
-import { useEffect, useReducer, useState, useRef } from 'react';
-import randNumberReducer from './Reducers/randNumberReducer';
+import axios from 'axios';
+import bookReducer from './Reducers/bookReducer';
 
 function App() {
 
-  const [list, dispatchList] = useReducer(randNumberReducer, []);
-  const [delKv, setDelKv] = useState('');
-  const [filtras, setFiltras] = useState('0');
-  const doRange = useRef(true); // range const priskirta true, gali veikt;
+  const [books, dispatchBooks] = useReducer(bookReducer, []);
+  // const [books, setBooks] = useState([]); // pradinis state tuscias masyvas;
 
-  
-  const addList = () => {
-
-    const action = {
-      type: 'add_list',
-    }
-    dispatchList(action);
-  }
-  
-  const sortList = () => {
-
-    const action = {
-      type: 'sort_list',
-    }
-    dispatchList(action);
-  }
-  
-  const daugiauList = () => {
-
-    const action = {
-      type: 'daugiau_list',
-    }
-    dispatchList(action);
-  }
-  
-  const maziauList = () => {
-
-    const action = {
-      type: 'maziau_list',
-    }
-    dispatchList(action);
-  }
-  
-  const grazintiList = () => {
-
-    const action = {
-      type: 'grazinti_list',
-    }
-    dispatchList(action);
-  }
-  
-  const defList = () => {
-
-    const action = {
-      type: 'def_list',
-    }
-    dispatchList(action);
-  }
-  
-  const addKv = () => {
-
-    const action = {
-      type: 'addkv_list',
-    }
-    dispatchList(action);
-  }
-  
-  const opa = e => {
-
-    const action = {
-      type: 'removekv',
-      payload: e //parodo nr kuri paslepsim
-    }
-    dispatchList(action);
-  }
-  
-  const trinti = () => {
-    // setDelKv(delKv);
-    const action = {
-      type: 'removekv',
-      payload: delKv
-    }
-    setDelKv(''); // grazina tuscia inputa po ivestos reiksmes;
-    dispatchList(action);
-  }
-  
   useEffect(() => {
-    if (!doRange.current) {
-        return;
-    }
-    doRange.current = false;
-    setTimeout(() => doRange.current = true, 20);
+    axios.get('https://in3.dev/knygos/')
+    .then(res => {
+      const action = {
+        payload: res.data,
+        type: 'book'
+      }
+      console.log(action)
+      dispatchBooks(action);
+    })
+  }, []);
+
+  const sortAbc = () => {
 
     const action = {
-        type: 'range',
-        payload: filtras.padStart(4, 0)
+      type: 'sort_abc',
     }
-    dispatchList(action);
-}, [filtras])
+    dispatchBooks(action);
+  }
 
+  const sortDef = () => {
 
-  return (
+    const action = {
+      type: 'sort_def',
+    }
+    dispatchBooks(action);
+  }
+
+    return (
     <div className="App">
       <header className="App-header">
-        <div className='kvc'>
-          <h1>Reducer</h1>
-        </div>
+        <h1>PAVADINIMAI</h1>
         <div className='kvc'>
           {
-            list.map((o, i) => o.show ? <div key={i} className="kv" style={{backgroundColor: o.color}} onClick={() => opa(o.number)}><i>{o.number}</i></div> : null)
+            books.map(b => <div key={b.id}>{b.title} {b.price} EUR</div>)
           }
         </div>
         <div className='kvc'>
-          <button onClick={addList}>10</button>
-          <button onClick={sortList}>Sort</button>
-          <button onClick={daugiauList}>5000</button>
-          <button onClick={maziauList}>4000</button>
-          <button onClick={grazintiList}>Grazinti</button>
-          <button onClick={defList}>DefSort</button>
-          <button onClick={addKv}>Add</button>
-        </div>
-        <div className='kvc'>
-          <input type='number' onChange={e => setDelKv(e.target.value)} value={delKv}></input>
-          <button onClick={trinti}>Delete kv</button>
-        </div>
-        <div className='kvc'>
-          <h1>Kvadratų filtracija {filtras.padStart(4, 0)}</h1>
-        </div>
-        <div className='kvc'>
-          <input type='range' min="0" max="9999" onChange={e => setFiltras(e.target.value)} value={filtras}></input>
+          <button onClick={sortAbc}>Sort AZ</button>
+          <button onClick={sortDef}>Reset sort</button>
         </div>
       </header>
     </div>
-  )
+  );
 }
 
 export default App;
 
-// 1. (useReducer) Mygtukas, kai jį paspaudžiam atsiranda list'as iš 10 random skaičių. Reducer'io viduje sugeneruojamas masyvas iš 10 skaičių.
-// {number: '0025', color: #9494df};
 
-// Du mygtukai: vienas turėtų rodyti didesnius nei 5000, kitas - mažesnius nei 4000.
+// sort pagal abc;
+// sort pagal tokia tvarka, kokia buvo;
 
-// ND
-// 1) Paspaudus kv jis dingsta, paspaudus reset filter (grąžinti) jis vėl atsiranda.
-// 2) Padaryti input laukelį, į kurį įrašius kv skaičių ir paspaudus dar vieną sukurtą mygtuką, kv su tuo skaičium išnyks. (useState)
-// 3) Padaryti gyvą filtraciją. Pridėti input tipo range nuo 0 iki 9999. Slankiojant range turi iš karto filtruotis kvadratukai. Range rodo maksimalų rodomų kv skaičių. (useState)
+// JSON pagalba is objekto padarome stringa, veikia kaip vertejas tarp skirtingu programavimo kalbu;
