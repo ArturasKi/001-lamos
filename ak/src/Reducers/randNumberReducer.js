@@ -51,8 +51,30 @@ function randNumberReducer(state, action) {
         case 'def_list':
 
             newState = [...state].sort((a, b) => a.row - b.row); 
-            console.log(newState);
+            console.log(newState); // sort keicia originalia reiksme;
             break;
+
+        case 'addkv_list':
+            newState = [...state, {
+                number: (('' + rand(0, 9999)).padStart(4, 0)), 
+                color: '#000',
+                show: true,
+                row: state.length
+            }]
+             break;
+
+        case 'removekv':
+            newState = state.map(o => o.number === action.payload ? {...o, show: false} : {...o});
+            // newState = state.map(o => o.number !== action.payload ? {...o, show: o.show ? true : false} : {...o, show: false});
+            // state.filter((o) => o.number !== action.payload);
+            break;
+
+            // newState = state.map(o => o.number !== action.payload ? {...o, show: o.show ? true : false} : {...o, show: false});
+
+        case 'filtkv':
+            newState = state.map(o => o.number > action.payload ? {...o, show: true} : {...o, show: false});
+            break;
+            
         default : newState = [...state];
     }
 
@@ -65,3 +87,4 @@ function randNumberReducer(state, action) {
 export default randNumberReducer;
 
 // masyvas iš 10 reikšmių map'inam, vietoj brūkšniuko grąžinamas rand skaičius.
+// prideti naujus kv juodus;
