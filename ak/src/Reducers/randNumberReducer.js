@@ -71,8 +71,9 @@ function randNumberReducer(state, action) {
 
             // newState = state.map(o => o.number !== action.payload ? {...o, show: o.show ? true : false} : {...o, show: false});
 
-        case 'filtkv':
-            newState = state.map(o => o.number > action.payload ? {...o, show: true} : {...o, show: false});
+        case "range":
+            console.log('go', action.payload)
+            newState = state.map(o => o.number > action.payload ? {...o, show: true} : {...o, show: false} )
             break;
             
         default : newState = [...state];
