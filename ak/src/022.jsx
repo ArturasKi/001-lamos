@@ -62,4 +62,7 @@ export default App;
 // sort pagal abc;
 // sort pagal tokia tvarka, kokia buvo;
 
-// JSON pagalba is objekto padarome stringa, veikia kaip vertejas tarp skirtingu programavimo kalbu;
+//1. Mygtukas filtrui rodyti brangesnes nei 13eur knygas;
+//2. Mygtukas filtro reset'ui;
+//3. Knygu 'reload' mygtukas (is naujo atsiuncia knygas is serverio); -> useEffect
+//4. Salia knygos atspausdinti jos kategorija; https://in3.dev/knygos/types/
