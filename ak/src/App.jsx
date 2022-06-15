@@ -1,101 +1,53 @@
-import { useEffect, useReducer } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useReducer } from "react";
 import "./App.scss";
-import axios from "axios";
-import bookReducer from "./Reducers/bookReducer";
-import bookTypeReducer from "./Reducers/bookTypeReducer";
+import ld from "./Reducers/ld";
 
-// BOOKS
+const masyvas = [
+  { id: 3, name: "Peter", bid: 487.77, date: "2022-06-01T10:37" },
+
+  { id: 7, name: "Mary", bid: 125.33, date: "2022-06-01T11:37" },
+
+  { id: 8, name: "Ąžuolas", bid: 78.25, date: "2022-06-01T09:22" },
+
+  { id: 9, name: "Petras Dainorius", bid: 1087.77, date: "2022-06-01T08:13" },
+];
 
 function App() {
-  const [books, dispatchBooks] = useReducer(bookReducer, []);
-  const [bookType, dispatchBookType] = useReducer(bookTypeReducer, []);
-  // const [books, setBooks] = useState([]); // pradinis state tuscias masyvas;
+
+  const [list, dispatchList] = useReducer(ld, masyvas);
+  const [select, setSelect] = useState('bid_asc');
 
   useEffect(() => {
-    axios.get("https://in3.dev/knygos/").then((res) => {
-      const action = {
-        payload: res.data,
-        type: "book",
-      };
-      console.log(action);
-      dispatchBooks(action);
-    });
-  }, []);
-
-  useEffect(() => {
-    axios.get("https://in3.dev/knygos/types/").then((res) => {
-      const action = {
-        payload: res.data,
-        type: "book_type",
-      };
-      console.log(action);
-      dispatchBookType(action);
-    });
-  }, []);
-
-  const sortAbc = () => {
-    const action = {
-      type: "sort_abc",
-    };
-    dispatchBooks(action);
-  };
-
-  const sortDef = () => {
-    const action = {
-      type: "sort_def",
-    };
-    dispatchBooks(action);
-  };
-
-  const sortCost = () => {
-    const action = {
-      type: "sort_cost",
-    };
-    dispatchBooks(action);
-  };
-
-  const sortReset = () => {
-    const action = {
-      type: "sort_reset",
-    };
-    dispatchBooks(action);
-  };
-
-  const reload = () => {
-    axios.get("https://in3.dev/knygos/").then((res) => {
-      const action = {
-        payload: res.data,
-        type: "reload_books",
-      };
-      console.log(action);
-      dispatchBooks(action);
-    });
-  };
+    dispatchList({type: select}); // dispatchina selectu numatyta action objekta (action.type);
+  }, [select]); // useEffect suveikia, kai pasikeicia [select];
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>KNYGOS</h1>
-        <div>
-          {books.map((book) =>
-            book.show ? (
-              <div key={book.id}>
-                <b>{book.title}</b> {book.price} EUR{" "}
-                <i>
-                  {bookType.map((type) =>
-                    type.id === book.type ? type.title : null
-                  )}
-                </i>
-              </div>
-            ) : null
-          )}
+        <h1>SORT WITH REDUCER</h1>
+        <div className="kvc1">
+          <select value={select} onChange={e => setSelect(e.target.value)}>
+            <option value="date_asc">DATE ASC</option>
+            <option value="date_desc">DATE DESC</option>
+            <option value="bid_asc">BID ASC</option>
+            <option value="bid_desc">BID DESC</option>
+            <option value="name_asc">NAME ASC</option>
+            <option value="name_desc">NAME DESC</option>
+            <option value="name_asc_local">NAME ASC LOCAL</option>
+            <option value="random">RANDOM</option>
+          </select>
         </div>
-        <div className="kvc">
-          <button onClick={sortAbc}>Sort AZ</button>
-          <button onClick={sortDef}>Reset sort</button>
-          <button onClick={sortCost}>Cost more than 13eur</button>
-          <button onClick={sortReset}>Reset</button>
-          <button onClick={reload}>Reload</button>
+        <div>
+          {list.map((bider) => (
+            <div className="kvc1" key={bider.id}>
+              <span>ID: {bider.id}</span>
+              <span> Name: {bider.name}</span>
+              <span> Bid: {bider.bid}</span>
+              <span> Date: {bider.date}</span>
+            </div>
+          ))}
         </div>
       </header>
     </div>
@@ -103,11 +55,3 @@ function App() {
 }
 
 export default App;
-
-// sort pagal abc;
-// sort pagal tokia tvarka, kokia buvo;
-
-//1. Mygtukas filtrui rodyti brangesnes nei 13eur knygas;
-//2. Mygtukas filtro reset'ui;
-//3. Knygu 'reload' mygtukas (is naujo atsiuncia knygas is serverio); -> useEffect
-//4. Salia knygos atspausdinti jos kategorija; https://in3.dev/knygos/types/

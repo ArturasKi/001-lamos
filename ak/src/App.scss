@@ -57,6 +57,14 @@
   flex-wrap: wrap;
 }
 
+.kvc1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 90vw; 
+}
+
 button {
   display: flex;
   align-items: center;
