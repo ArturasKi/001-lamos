@@ -4,7 +4,7 @@ function bookReducer(state, action) {
 
     switch(action.type) {
         case 'book':
-            newState = action.payload.map((b, i) => ({...b, row: i}));
+            newState = action.payload.map((book, index) => ({...book, row: index, show: true}));
             console.log(newState)
             break;
 
@@ -20,6 +20,19 @@ function bookReducer(state, action) {
         case 'sort_def':
             newState = [...state].sort((a, b) => a.row - b.row);
             console.log(newState);
+            break;
+
+        case 'sort_cost':
+            newState = state.map((book) => book.price > 13 ? { ...book, show: true } : { ...book, show: false });
+            break;
+
+        case 'sort_reset':
+            newState = state.map((book) => book.price ? { ...book, show: true } : { ...book, show: false });
+            break;
+
+        case 'reload_books':
+            newState = action.payload.map((book, index) => ({...book, row: index, show: true}));
+            console.log(newState)
             break;
         
             
