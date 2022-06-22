@@ -1,18 +1,22 @@
+import { useContext } from 'react';
 import { useState } from 'react';
+import TreeContext from './TreeContext';
 
 
-function Create({setCreateData}) {
+function Create() {
 
-    const [name, setName] = useState('');
+  const {setCreateData} = useContext(TreeContext);
+
+    const [title, setTitle] = useState('');
     const [type, setType] = useState(1);
-    const [place, setPlace] = useState('');
+    const [height, setHeight] = useState('');
 
     const handleCreate = () => {
-      const data = {name, type, place};
+      const data = {title, type, height};
       setCreateData(data);
-      setName('');
+      setTitle('');
       setType('1');
-      setPlace('');
+      setHeight('');
     }
 
     return (
@@ -22,22 +26,22 @@ function Create({setCreateData}) {
             </div>
             <div className="card-body">
               <div className="form-group">
-                <label>Name</label>
-                <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)}></input>
-                <small className="form-text text-muted">Enter tree name here.</small>
+                <label>Title</label>
+                <input type="text" className="form-control" value={title} onChange={e => setTitle(e.target.value)}></input>
+                <small className="form-text text-muted">Enter tree title here.</small>
               </div>
               <div className="form-group">
                 <label>Type</label>
                 <select className="form-control" value={type} onChange={e => setType(e.target.value)}>
-                    <option value='1'>Test</option>
-                    <option value='2'>Written</option>
-                    <option value='3'>Spoken</option>
+                    <option value='1'>Leaf</option>
+                    <option value='2'>Spike</option>
+                    <option value='3'>Palm</option>
                 </select>
                 <small className="form-text text-muted">Select tree type.</small>
               </div>
               <div className="form-group">
-                <label>Place</label>
-                <input type="text" className="form-control" value={place} onChange={e => setPlace(e.target.value)}></input>
+                <label>Height</label>
+                <input type="text" className="form-control" value={height} onChange={e => setHeight(e.target.value)}></input>
                 <small className="form-text text-muted">Enter tree height here.</small>
               </div>
               <button type="button" className="btn btn-outline-primary" onClick={handleCreate}>Create</button>

@@ -29,45 +29,52 @@ function App() {
   // CREATE
   useEffect(() => {
     if (null === createData) return;
-
-    setLastUpdate(Date.now());
-  // IŠSIUNČIAMAS Į LOCALSTORAGE;
+    axios.post('http://localhost:3003/medziai', createData)
+    .then(_ => {
+      setLastUpdate(Date.now()); // irasymas, update;
+    })
   }, [createData]);
 
   // DELETE
   useEffect(() => {
     if (null === deleteData) return;
-  
-    setLastUpdate(Date.now());
-  // IŠSIUNČIAMAS Į LOCALSTORAGE;
+    axios.delete('http://localhost:3003/medziai/' + deleteData.id)
+    .then(_ => {
+      setLastUpdate(Date.now()); // irasymas, update;
+    })
   }, [deleteData]);
 
   // EDIT
   useEffect(() => {
     if (null === editData) return;
-    
-    setLastUpdate(Date.now());
-  // IŠSIUNČIAMAS Į LOCALSTORAGE;
+    axios.delete('http://localhost:3003/medziai/' + deleteData.id)
+    .then(_ => {
+      setLastUpdate(Date.now()); // irasymas, update;
+    })
   }, [editData]);
 
 
   return (
     <TreeContext.Provider value={
       {
-        trees
+        trees,
+        setCreateData,
+        setDeleteData,
+        setModalData,
+        modalData
       }
     }>
       <div className="container">
         <div className="row">
           <div className="col-4">
-            <Create setCreateData={setCreateData}></Create>
+            <Create/>
           </div>
           <div className="col-8">
-            <List setDeleteData={setDeleteData} trees={trees} setModalData={setModalData}></List>
+            <List trees={trees}></List>
           </div>
         </div>
       </div>
-      <Edit setEditData={setEditData} modalData={modalData} setModalData={setModalData}></Edit>
+      <Edit/>
     </TreeContext.Provider>
   );
 }
