@@ -1,17 +1,17 @@
-import Ex from "./Ex";
+import Tree from "./Tree";
 
 
-function List({exes, setDeleteData, setModalData}) {
+function List({trees, setDeleteData, setModalData}) {
 
     return (
         <div className="card mt-4">
             <div className="card-header">
-              <h2>List of Exams</h2>
+              <h2>List of trees</h2>
             </div>
             <div className="card-body">
                 <ul className="list-group">
                     {
-                    exes ? exes.map(ex => <Ex key={ex.id} ex={ex} setDeleteData={setDeleteData} setModalData={setModalData}></Ex>) : null
+                    trees ? trees.map(tree => <Tree key={tree.id} ex={tree}></Tree>) : null
                     }
                 </ul>
             </div>

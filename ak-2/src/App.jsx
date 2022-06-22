@@ -4,13 +4,14 @@ import './crud.scss'
 import Create from './Components/Create';
 import List from './Components/List';
 import Edit from './Components/Edit';
+import TreeContext from './Components/TreeContext';
 // import './App.scss';
 
 
 function App() {
 
   const [lastUpdate, setLastUpdate] = useState(Date.now());
-  const [exes, setExes] = useState(null);
+  const [trees, setTrees] = useState(null);
   
   const [modalData, setModalData] = useState(null);
 
@@ -20,14 +21,12 @@ function App() {
 
   // READ
   useEffect(() => {
-    setExes();
+
   }, [lastUpdate]);
 
   // CREATE
   useEffect(() => {
-    if (null === createData) {
-      return;
-    }
+    if (null === createData) return;
     
     setLastUpdate(Date.now());
   // IŠSIUNČIAMAS Į LOCALSTORAGE;
@@ -35,19 +34,16 @@ function App() {
 
   // DELETE
   useEffect(() => {
-    if (null === deleteData) {
-      return;
-    }
-    
+    if (null === deleteData) return;
+  
     setLastUpdate(Date.now());
   // IŠSIUNČIAMAS Į LOCALSTORAGE;
   }, [deleteData]);
 
   // EDIT
   useEffect(() => {
-    if (null === editData) {
-      return;
-    }
+    if (null === editData) return;
+
     
     setLastUpdate(Date.now());
   // IŠSIUNČIAMAS Į LOCALSTORAGE;
@@ -55,19 +51,19 @@ function App() {
 
 
   return (
-    <>
+    <TreeContext.Provider value={{trees}}>
       <div className="container">
         <div className="row">
           <div className="col-4">
             <Create setCreateData={setCreateData}></Create>
           </div>
           <div className="col-8">
-            <List setDeleteData={setDeleteData} exes={exes} setModalData={setModalData}></List>
+            <List setDeleteData={setDeleteData} trees={trees} setModalData={setModalData}></List>
           </div>
         </div>
       </div>
       <Edit setEditData={setEditData} modalData={modalData} setModalData={setModalData}></Edit>
-    </>
+    </TreeContext.Provider>
   );
 }
 
