@@ -1,7 +1,11 @@
+import { useContext } from "react";
 import Tree from "./Tree";
+import TreeContext from "./TreeContext";
 
 
-function List({trees, setDeleteData, setModalData}) {
+function List() {
+
+    const {trees} = useContext(TreeContext);
 
     return (
         <div className="card mt-4">
@@ -11,7 +15,7 @@ function List({trees, setDeleteData, setModalData}) {
             <div className="card-body">
                 <ul className="list-group">
                     {
-                    trees ? trees.map(tree => <Tree key={tree.id} tree={tree} setDeleteData={setDeleteData} setModalData={setModalData}></Tree>) : null
+                    trees ? trees.map(tree => <Tree key={tree.id} tree={tree}></Tree>) : null
                     }
                 </ul>
             </div>

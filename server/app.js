@@ -30,7 +30,7 @@ const con = mysql.createConnection({
 // }) // routingas
 
 //READ kai skaitom 'select'
-app.get("/trees", (req, res) => {
+app.get("/medziai", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
     SELECT
@@ -50,7 +50,7 @@ app.listen(port, () => {
 //CREATE
 // INSERT INTO table_name (column1, column2, column3, ...)
 // VALUES (value1, value2, value3, ...);
-app.post("/trees", (req, res) => {
+app.post("/medziai", (req, res) => {
   // post - routeris, postinam info i serveri;
   const sql = `
   INSERT INTO trees
@@ -68,7 +68,7 @@ app.post("/trees", (req, res) => {
 });
 //DELETE
 // DELETE FROM table_name WHERE condition;
-app.delete("/trees/:treeId", (req, res) => {
+app.delete("/medziai/:treeId", (req, res) => {
   // delete - routeris, istrinama info is serverio;
   const sql = `
   DELETE FROM trees

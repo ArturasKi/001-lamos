@@ -5,6 +5,7 @@ import Create from './Components/Create';
 import List from './Components/List';
 import Edit from './Components/Edit';
 import TreeContext from './Components/TreeContext';
+import axios from 'axios';
 // import './App.scss';
 
 
@@ -21,7 +22,8 @@ function App() {
 
   // READ
   useEffect(() => {
-    setTrees();
+    axios.get('http://localhost:3003/medziai')
+    .then(res => setTrees(res.data));
   }, [lastUpdate]);
 
   // CREATE
