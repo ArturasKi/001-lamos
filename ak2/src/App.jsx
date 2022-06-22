@@ -78,6 +78,17 @@ function App() {
 
   // GOODS
 
+  useEffect(() => {
+    if (null === createDataGoods) return;
+    axios
+      .post("http://localhost:3003/gerybes", createDataGoods)
+      .then((res) => {
+        showMessage(res.data.msg);
+        setLastUpdate(Date.now()); // irasymas, update;
+      })
+
+  }, [createDataGoods]);
+
   const showMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => setMessage(null), 5000);

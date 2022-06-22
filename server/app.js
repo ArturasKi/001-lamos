@@ -66,6 +66,22 @@ app.post("/medziai", (req, res) => {
     }
   );
 });
+app.post("/gerybes", (req, res) => {
+  // post - routeris, postinam info i serveri;
+  const sql = `
+  INSERT INTO goods
+  (title)
+  VALUES (?)
+`;
+  con.query(
+    sql,
+    [req.body.title],
+    (err, result) => {
+      if (err) throw err;
+      res.send({result, msg: {text: 'Ok, Zuiki', type: 'success'}});
+    }
+  );
+});
 //DELETE
 // DELETE FROM table_name WHERE condition;
 app.delete("/medziai/:treeId", (req, res) => {
