@@ -34,8 +34,22 @@ app.get("/medziai", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
     SELECT
+    t.title, g.title AS good, height, type, t.id
+    FROM trees AS t
+    LEFT JOIN goods AS g
+    ON t.good_id = g.id
+  `;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+app.get("/gerybes", (req, res) => {
+  // get - routeris, paimam info is serverio;
+  const sql = `
+    SELECT
     *
-    FROM trees
+    FROM goods
   `;
   con.query(sql, (err, result) => {
     if (err) throw err;
@@ -62,7 +76,7 @@ app.post("/medziai", (req, res) => {
     [req.body.type, req.body.title, req.body.height],
     (err, result) => {
       if (err) throw err;
-      res.send({result, msg: {text: 'Ok, Zuiki', type: 'success'}});
+      res.send({ result, msg: { text: "Ok, Zuiki", type: "success" } });
     }
   );
 });
@@ -73,14 +87,10 @@ app.post("/gerybes", (req, res) => {
   (title)
   VALUES (?)
 `;
-  con.query(
-    sql,
-    [req.body.title],
-    (err, result) => {
-      if (err) throw err;
-      res.send({result, msg: {text: 'Ok, Zuiki', type: 'success'}});
-    }
-  );
+  con.query(sql, [req.body.title], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Ok, Zuiki", type: "success" } });
+  });
 });
 //DELETE
 // DELETE FROM table_name WHERE condition;
@@ -92,7 +102,7 @@ app.delete("/medziai/:treeId", (req, res) => {
 `;
   con.query(sql, [req.params.treeId], (err, result) => {
     if (err) throw err;
-    res.send({result, msg: {text: 'Ok, Bebras', type: 'success'}});
+    res.send({ result, msg: { text: "Ok, Bebras", type: "success" } });
   });
 });
 
@@ -108,10 +118,14 @@ app.put("/medziai/:treeId", (req, res) => {
   SET title = ?, type = ?, height = ?
   WHERE id = ?
 `;
-  con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
-    if (err) throw err;
-    res.send({result, msg: {text: 'Ok, Barsukai', type: 'success'}});
-  });
+  con.query(
+    sql,
+    [req.body.title, req.body.type, req.body.height, req.params.treeId],
+    (err, result) => {
+      if (err) throw err;
+      res.send({ result, msg: { text: "Ok, Barsukai", type: "success" } });
+    }
+  );
 });
 
 // VALUES turi buti irasomi kintamieji, kurie atitinka stulpeli;
@@ -121,4 +135,3 @@ app.put("/medziai/:treeId", (req, res) => {
 
 // null - neegzistuojantis objektas;
 // undefined - niekas nieko nezino;
-

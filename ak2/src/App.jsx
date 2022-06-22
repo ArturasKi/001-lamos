@@ -78,6 +78,7 @@ function App() {
 
   // GOODS
 
+  //Create
   useEffect(() => {
     if (null === createDataGoods) return;
     axios
@@ -88,6 +89,13 @@ function App() {
       })
 
   }, [createDataGoods]);
+
+  //Read
+  useEffect(() => {
+    axios
+      .get("http://localhost:3003/gerybes")
+      .then((res) => setGoods(res.data));
+  }, [lastUpdate]);
 
   const showMessage = (msg) => {
     setMessage(msg);
@@ -106,6 +114,7 @@ function App() {
         message,
         disableCreate,
         setDisableCreate,
+        goods
       }}
     >
       <GoodContext.Provider value={{
