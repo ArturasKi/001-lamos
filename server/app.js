@@ -1,4 +1,4 @@
-const express = require('express'); // užkrauna biblioteką;
+const express = require("express"); // užkrauna biblioteką;
 const app = express(); // pasakom, jog biblioteka vadinasi app;
 const port = 3003; // pasako kuriam port'e veiks;
 const cors = require("cors");
@@ -6,18 +6,19 @@ app.use(cors());
 const mysql = require("mysql");
 
 app.use(
-    express.urlencoded({
-      extended: true,
-    })
-  );
-  app.use(express.json());
-  
-  const con = mysql.createConnection({ // daromas connection prie DB
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "la_ma",
-  });
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.json());
+
+const con = mysql.createConnection({
+  // daromas connection prie DB
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "la_ma",
+});
 
 // Routes
 // app.get('/', (req, res) => {
@@ -30,31 +31,50 @@ app.use(
 
 //READ kai skaitom 'select'
 app.get("/trees", (req, res) => {
-    const sql = `
+  // get - routeris, paimam info is serverio;
+  const sql = `
     SELECT
     *
     FROM trees
   `;
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
   });
+});
 
 app.listen(port, () => {
-  console.log(`Bebras klauso porto Nr ${port}`)
-})
+  console.log(`Bebras klauso porto Nr ${port}`);
+});
 
-//CREATE 
+//CREATE
 // INSERT INTO table_name (column1, column2, column3, ...)
 // VALUES (value1, value2, value3, ...);
 app.post("/trees", (req, res) => {
+  // post - routeris, postinam info i serveri;
   const sql = `
   INSERT INTO trees
   (type, title, height)
   VALUES (?, ?, ?)
 `;
-  con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {
+  con.query(
+    sql,
+    [req.body.type, req.body.title, req.body.height],
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
+});
+//DELETE
+// DELETE FROM table_name WHERE condition;
+app.delete("/trees/:treeId", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  DELETE FROM trees
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.treeId], (err, result) => {
     if (err) throw err;
     res.send(result);
   });
@@ -62,3 +82,9 @@ app.post("/trees", (req, res) => {
 
 // VALUES turi buti irasomi kintamieji, kurie atitinka stulpeli;
 // post duomenys eina body'je;
+
+// kai paspaudziam mygtuka, useEffect paleidzia axios, axios per interneta nueina i serveri, serveris pagal routeri paziuri, ka daryti pagal duomenis, pasikreipia i duomenu baze ir kazka padaro;
+
+// null - neegzistuojantis objektas;
+// undefined - niekas nieko nezino;
+

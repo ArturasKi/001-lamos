@@ -31,26 +31,26 @@ function App() {
     if (null === createData) return;
     axios.post('http://localhost:3003/trees', createData)
     .then(_ => {
-      setLastUpdate(Date.now()); // vyksta naujas irasymas, ir update'inama info
+      setLastUpdate(Date.now()); // vyksta naujas irasymas, ir update'inama info serveryje;
     }); 
-  // IŠSIUNČIAMAS Į LOCALSTORAGE;
   }, [createData]);
 
   // DELETE
   useEffect(() => {
     if (null === deleteData) return;
-  
-    setLastUpdate(Date.now());
-  // IŠSIUNČIAMAS Į LOCALSTORAGE;
+    axios.delete('http://localhost:3003/trees/' + deleteData.id) // delete reikia perduoti kaip parametra (id);
+    .then(_ => {
+      setLastUpdate(Date.now()); // vyksta naujas irasymas, ir update'inama info
+    }); 
   }, [deleteData]);
 
   // EDIT
   useEffect(() => {
     if (null === editData) return;
-
-    
-    setLastUpdate(Date.now());
-  // IŠSIUNČIAMAS Į LOCALSTORAGE;
+    axios.put('http://localhost:3003/trees/' + editData.id, editData) // delete reikia perduoti kaip parametra (id);
+    .then(_ => {
+      setLastUpdate(Date.now());
+    }); 
   }, [editData]);
 
 
@@ -58,7 +58,10 @@ function App() {
     <TreeContext.Provider value={
       {
         trees,
-        setCreateData
+        setCreateData,
+        setDeleteData,
+        setModalData,
+        modalData
       }
     }>
       <div className="container">
@@ -67,11 +70,11 @@ function App() {
             <Create/>
           </div>
           <div className="col-8">
-            <List setDeleteData={setDeleteData} trees={trees} setModalData={setModalData}></List>
+            <List/>
           </div>
         </div>
       </div>
-      <Edit setEditData={setEditData} modalData={modalData} setModalData={setModalData}></Edit>
+      <Edit/>
     </TreeContext.Provider>
   );
 }
