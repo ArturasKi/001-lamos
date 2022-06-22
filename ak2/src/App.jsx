@@ -7,21 +7,28 @@ import Edit from "./Components/Edit";
 import TreeContext from "./Components/TreeContext";
 import Message from "./Components/Message";
 import axios from "axios";
+import GoodContext from "./Components/goods/GoodContext";
 // import './App.scss';
+import CreateGoods from './Components/goods/Create';
 
 function App() {
   const [lastUpdate, setLastUpdate] = useState(Date.now());
+
+  //TREES
   const [trees, setTrees] = useState(null);
-
   const [modalData, setModalData] = useState(null);
-
   const [createData, setCreateData] = useState(null); // null, nes pradzioj jokio objekto nera;
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
 
+  //GOODS
+  const [goods, setGoods] = useState(null);
+  const [createDataGoods, setCreateDataGoods] = useState(null);
+
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
 
+  // TREES
   // READ
   useEffect(() => {
     axios
@@ -68,6 +75,9 @@ function App() {
       });
   }, [editData]);
 
+
+  // GOODS
+
   const showMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => setMessage(null), 5000);
@@ -87,10 +97,14 @@ function App() {
         setDisableCreate,
       }}
     >
+      <GoodContext.Provider value={{
+        setCreateData: setCreateDataGoods
+      }}>
       <div className="container">
         <div className="row">
           <div className="col-4">
             <Create />
+            <CreateGoods/>
           </div>
           <div className="col-8">
             <List trees={trees}></List>
@@ -99,6 +113,7 @@ function App() {
       </div>
       <Edit />
       <Message />
+      </GoodContext.Provider>
     </TreeContext.Provider>
   );
 }
