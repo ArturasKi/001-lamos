@@ -80,6 +80,24 @@ app.delete("/medziai/:treeId", (req, res) => {
   });
 });
 
+// EDIT
+// UPDATE table name
+// SET column1 = value1, column2 = value2, ...
+// WHERE condition;
+
+app.put("/medziai/:treeId", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  UPDATE trees
+  SET title = ?, type = ?, height = ?
+  WHERE id = ?
+`;
+  con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
 // VALUES turi buti irasomi kintamieji, kurie atitinka stulpeli;
 // post duomenys eina body'je;
 

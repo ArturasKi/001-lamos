@@ -5,6 +5,7 @@ import Create from './Components/Create';
 import List from './Components/List';
 import Edit from './Components/Edit';
 import TreeContext from './Components/TreeContext';
+import Message from './Components/Message';
 import axios from 'axios';
 // import './App.scss';
 
@@ -19,6 +20,8 @@ function App() {
   const [createData, setCreateData] = useState(null); // null, nes pradzioj jokio objekto nera;
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
+
+  const [message, setMessage] = useState(null);
 
   // READ
   useEffect(() => {
@@ -47,7 +50,7 @@ function App() {
   // EDIT
   useEffect(() => {
     if (null === editData) return;
-    axios.delete('http://localhost:3003/medziai/' + deleteData.id)
+    axios.put('http://localhost:3003/medziai/' + editData.id, editData)
     .then(_ => {
       setLastUpdate(Date.now()); // irasymas, update;
     })
@@ -61,7 +64,9 @@ function App() {
         setCreateData,
         setDeleteData,
         setModalData,
-        modalData
+        modalData,
+        setEditData,
+        message
       }
     }>
       <div className="container">
@@ -75,6 +80,7 @@ function App() {
         </div>
       </div>
       <Edit/>
+      <Message/>
     </TreeContext.Provider>
   );
 }
