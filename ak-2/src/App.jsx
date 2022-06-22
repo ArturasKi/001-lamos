@@ -5,6 +5,7 @@ import Create from './Components/Create';
 import List from './Components/List';
 import Edit from './Components/Edit';
 import TreeContext from './Components/TreeContext';
+import axios from 'axios';
 // import './App.scss';
 
 
@@ -21,14 +22,17 @@ function App() {
 
   // READ
   useEffect(() => {
-
+    axios.get('http://localhost:3003/trees')
+    .then(res => setTrees(res.data));
   }, [lastUpdate]);
 
   // CREATE
   useEffect(() => {
     if (null === createData) return;
-    
-    setLastUpdate(Date.now());
+    axios.post('http://localhost:3003/trees', createData)
+    .then(_ => {
+      setLastUpdate(Date.now()); // vyksta naujas irasymas, ir update'inama info
+    }); 
   // IŠSIUNČIAMAS Į LOCALSTORAGE;
   }, [createData]);
 
@@ -51,11 +55,16 @@ function App() {
 
 
   return (
-    <TreeContext.Provider value={{trees}}>
+    <TreeContext.Provider value={
+      {
+        trees,
+        setCreateData
+      }
+    }>
       <div className="container">
         <div className="row">
           <div className="col-4">
-            <Create setCreateData={setCreateData}></Create>
+            <Create/>
           </div>
           <div className="col-8">
             <List setDeleteData={setDeleteData} trees={trees} setModalData={setModalData}></List>
