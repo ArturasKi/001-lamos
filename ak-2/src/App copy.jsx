@@ -8,17 +8,18 @@ import TreeContext from './Components/TreeContext';
 import axios from 'axios';
 import Message from './Components/Message';
 import GoodContext from './Components/goods/GoodContext';
-
 import CreateGoods from './Components/goods/Create';
+
+import ListGoods from './Components/goods/List';
+
 
 function App() {
 
   const [lastUpdate, setLastUpdate] = useState(Date.now());
-
-  ///Trees
-  const [trees, setTrees] = useState(null);
+  // TREES
+  const [trees, setTrees] = useState(null); 
   const [modalData, setModalData] = useState(null);
-  const [createData, setCreateData] = useState(null);
+  const [createData, setCreateData] = useState(null); // null, nes pradzioj jokio objekto nera;
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
 
@@ -29,19 +30,18 @@ function App() {
 
 
   const [message, setMessage] = useState(null);
-  const [disableCreate, setDisableCreate] = useState(false);
 
-//////////////////TREES?/////////////////////////////
-  //Read
+
+  // READ
   useEffect(() => {
     axios.get('http://localhost:3003/trees')
-      .then(res => setTrees(res.data));
+    .then(res => setTrees(res.data));
   }, [lastUpdate]);
 
-  // Create
+  // CREATE
   useEffect(() => {
     if (null === createData) return;
-    axios.post('http://localhost:3003/trees', createData)
+    axios.post('http://localhost:3003/medziai', createData)
       .then(res => {
         showMessage(res.data.msg);
         setLastUpdate(Date.now());
@@ -51,38 +51,41 @@ function App() {
       })
       .then(() => {
         setDisableCreate(false);
-      })
+      })// vyksta naujas irasymas, ir update'inama info serveryje;
 
 
-  }, [createData]);
+  // DELETE
 
-  // Delete
   useEffect(() => {
     if (null === deleteData) return;
-    axios.delete('http://localhost:3003/trees/' + deleteData.id)
+    axios.delete('http://localhost:3003/medziai/' + deleteData.id)
       .then(res => {
         showMessage(res.data.msg);
         setLastUpdate(Date.now());
       });
   }, [deleteData]);
+// delete reikia perduoti kaip parametra (id);
+// vyksta naujas irasymas, ir update'inama info
 
-  // Edit
+
+  // EDIT
   useEffect(() => {
     if (null === editData) return;
-    axios.put('http://localhost:3003/trees/' + editData.id, editData)
+    axios.put('http://localhost:3003/medziai/' + editData.id, editData)
       .then(res => {
         showMessage(res.data.msg);
         setLastUpdate(Date.now());
       });
   }, [editData]);
+ 
 
-//////////////GOODS//////////////////////
+  //////////////GOODS//////////////////////
 
 
   // Create
   useEffect(() => {
     if (null === createDataGoods) return;
-    axios.post('http://localhost:3003/goods', createDataGoods)
+    axios.post('http://localhost:3003/gerybes', createDataGoods)
       .then(_ => {
         setLastUpdate(Date.now());
       })
@@ -90,19 +93,9 @@ function App() {
 
   // Read
   useEffect(() => {
-    axios.get('http://localhost:3003/goods')
+    axios.get('http://localhost:3003/gerybes')
       .then(res => setGoods(res.data));
   }, [lastUpdate]);
-
-
-
-
-
-
-
-
-
-
 
   const showMessage = msg => {
     setMessage(msg);
@@ -133,6 +126,7 @@ function App() {
           <div className="col-4">
             <Create />
             <CreateGoods/>
+            <ListGoods/>
           </div>
           <div className="col-8">
             <List></List>
@@ -144,7 +138,8 @@ function App() {
       </GoodContext.Provider>
     </TreeContext.Provider>
   );
-
-
+  );
+  
 }
+
 export default App;
