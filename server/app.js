@@ -62,7 +62,7 @@ app.post("/medziai", (req, res) => {
     [req.body.type, req.body.title, req.body.height],
     (err, result) => {
       if (err) throw err;
-      res.send(result);
+      res.send({result, msg: {text: 'Ok, Zuiki', type: 'success'}});
     }
   );
 });
@@ -76,7 +76,7 @@ app.delete("/medziai/:treeId", (req, res) => {
 `;
   con.query(sql, [req.params.treeId], (err, result) => {
     if (err) throw err;
-    res.send(result);
+    res.send({result, msg: {text: 'Ok, Bebras', type: 'success'}});
   });
 });
 
@@ -94,7 +94,7 @@ app.put("/medziai/:treeId", (req, res) => {
 `;
   con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
     if (err) throw err;
-    res.send(result);
+    res.send({result, msg: {text: 'Ok, Barsukai', type: 'success'}});
   });
 });
 
