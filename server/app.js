@@ -54,6 +54,7 @@ app.get("/gerybes", (req, res) => {
     RIGHT JOIN goods AS g
     ON t.goods_id = g.id
     GROUP BY g.id
+    ORDER BY COUNT(t.id) DESC
   `;
   con.query(sql, (err, result) => {
     if (err) throw err;
