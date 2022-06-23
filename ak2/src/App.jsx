@@ -87,7 +87,10 @@ function App() {
   //Read
   useEffect(() => {
     axios.get("http://localhost:3003/gerybes")
-      .then(res => setGoods(res.data));
+      .then(res => {
+        console.log(res.data);
+        setGoods(res.data);
+      });
   }, [lastUpdate]);
 
   const showMessage = (msg) => {

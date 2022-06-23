@@ -18,7 +18,7 @@ function Edit() {
     setTitle(modalData.title);
     setType(modalData.type);
     setHeight(modalData.height);
-    setGood(modalData.good ?? 0);
+    setGood(goods.filter(g => modalData.good === g.title)[0]?.id ?? 0);
   }, [modalData]);
 
   const handleEdit = () => {
