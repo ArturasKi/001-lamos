@@ -54,7 +54,7 @@ function Create() {
           <select
             className="form-control"
             value={good}
-            onChange={(e) => setType(e.target.value)}
+            onChange={(e) => setGood(e.target.value)}
           >
             <option value="0">Select Good</option>
             {

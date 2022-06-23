@@ -33,11 +33,12 @@ const con = mysql.createConnection({
 app.get("/medziai", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
-    SELECT
-    t.title, g.title AS good, height, type, t.id
-    FROM trees AS t
-    LEFT JOIN goods AS g
-    ON t.good_id = g.id
+  SELECT
+  t.title, g.title AS good, height, type, t.id
+  FROM trees AS t
+  LEFT JOIN goods AS g
+  ON t.goods_id = g.id
+
   `;
   con.query(sql, (err, result) => {
     if (err) throw err;
@@ -68,12 +69,12 @@ app.post("/medziai", (req, res) => {
   // post - routeris, postinam info i serveri;
   const sql = `
   INSERT INTO trees
-  (type, title, height)
-  VALUES (?, ?, ?)
+  (type, title, height, goods_id)
+  VALUES (?, ?, ?, ?)
 `;
   con.query(
     sql,
-    [req.body.type, req.body.title, req.body.height],
+    [req.body.type, req.body.title, req.body.height, req.body.good],
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "Ok, Zuiki", type: "success" } });
