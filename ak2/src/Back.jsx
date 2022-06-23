@@ -30,7 +30,7 @@ function Back() {
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
 
-  // TREES
+  // TREES //
   // READ
   useEffect(() => {
     axios
@@ -74,9 +74,9 @@ function Back() {
       });
   }, [editData]);
 
-  // GOODS
+  // GOODS //
 
-  //Create
+  // CREATE
   useEffect(() => {
     if (null === createDataGoods) return;
     axios.post("http://localhost:3003/gerybes", createDataGoods).then(_ => {
@@ -84,7 +84,7 @@ function Back() {
     });
   }, [createDataGoods]);
 
-  //Read
+  // READ
   useEffect(() => {
     axios.get("http://localhost:3003/gerybes")
       .then(res => {

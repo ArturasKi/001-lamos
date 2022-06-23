@@ -62,6 +62,24 @@ app.get("/gerybes", (req, res) => {
   });
 });
 
+//FRONT
+app.get("/front/gerybes", (req, res) => {
+  // get - routeris, paimam info is serverio;
+  const sql = `
+    SELECT
+    g.title, g.id, COUNT(t.id) AS trees_count
+    FROM trees AS t
+    RIGHT JOIN goods AS g
+    ON t.goods_id = g.id
+    GROUP BY g.id
+    ORDER BY COUNT(t.id) DESC
+  `;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Bebras klauso porto Nr ${port}`);
 });
