@@ -1,5 +1,5 @@
 body {
-    font-family: 'Comfortaa', cursive;
+    font-family: 'Oswald', sans-serif;
 }
 
 .list-group-item {
@@ -12,15 +12,61 @@ body {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-        };
+        }
         .nest-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
             li {
-                min-width: 300px;
                 background-color: aliceblue;
+                color: pink;
+            }
+        }
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        b {
+            margin-right: 7px;
+        }
+        i {
+            margin-left: 7px;
+        }
+        u {
+            margin-left: 7px;
+            color: skyblue;
+        }
+    }
+}
+
+.list-group-item {
+    .item-front {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .form-group {
+            width: 100%;
+        }
+        textarea {
+            width: 100%;
+        }
+        .nest-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            li {
+                background-color: aliceblue;
+                color: pink;
             }
         }
         .buttons {
@@ -43,7 +89,7 @@ body {
 
 .modal {
     display: block;
-    background-color: rgba(11, 63, 95, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .show-message {

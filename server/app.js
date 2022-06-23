@@ -80,6 +80,25 @@ app.get("/front/gerybes", (req, res) => {
   });
 });
 
+app.get("/front/medziai", (req, res) => {
+  // get - routeris, paimam info is serverio;
+  const sql = `
+  SELECT
+  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms
+  FROM trees AS t
+  LEFT JOIN goods AS g
+  ON t.goods_id = g.id
+  LEFT JOIN comments AS c
+  ON c.tree_id = t.id
+  GROUP BY t.id
+
+  `;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Bebras klauso porto Nr ${port}`);
 });
@@ -111,6 +130,19 @@ app.post("/gerybes", (req, res) => {
   VALUES (?)
 `;
   con.query(sql, [req.body.title], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Ok, Zuiki", type: "success" } });
+  });
+});
+
+app.post("/front/komentarai", (req, res) => {
+  // post - routeris, postinam info i serveri;
+  const sql = `
+  INSERT INTO comments
+  (com, tree_id)
+  VALUES (?, ?)
+`;
+  con.query(sql, [req.body.com, req.body.treeId], (err, result) => {
     if (err) throw err;
     res.send({ result, msg: { text: "Ok, Zuiki", type: "success" } });
   });

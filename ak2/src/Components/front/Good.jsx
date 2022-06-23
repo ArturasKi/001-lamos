@@ -1,5 +1,3 @@
-import GoodContext from "../goods/GoodContext";
-
 function Good({ good }) {
   return (
     <li className="list-group-item">
