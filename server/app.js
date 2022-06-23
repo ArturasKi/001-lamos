@@ -74,7 +74,7 @@ app.post("/medziai", (req, res) => {
 `;
   con.query(
     sql,
-    [req.body.type, req.body.title, req.body.height, req.body.good],
+    [req.body.type, req.body.title, req.body.height ? req.body.height : 0 , req.body.good !== '0' ? req.body.good : null],
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "Ok, Zuiki", type: "success" } });
@@ -127,12 +127,12 @@ app.put("/medziai/:treeId", (req, res) => {
   // delete - routeris, istrinama info is serverio;
   const sql = `
   UPDATE trees
-  SET title = ?, type = ?, height = ?
+  SET title = ?, type = ?, height = ?, goods_id = ?
   WHERE id = ?
 `;
   con.query(
     sql,
-    [req.body.title, req.body.type, req.body.height, req.params.treeId],
+    [req.body.title, req.body.type, req.body.height, req.body.good, req.params.treeId],
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "Ok, Barsukai", type: "success" } });
