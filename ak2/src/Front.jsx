@@ -23,7 +23,7 @@ function Front() {
     }>
       <div className="container">
         <div className="row">
-          <div className="col-4">
+          <div className="col-12">
             <FrontList/>
           </div>
         </div>

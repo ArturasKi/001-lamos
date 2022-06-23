@@ -13,6 +13,16 @@ body {
             align-items: center;
             justify-content: flex-start;
         };
+        .nest-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            li {
+                min-width: 300px;
+                background-color: aliceblue;
+            }
+        }
         .buttons {
             display: flex;
             align-items: center;

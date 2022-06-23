@@ -1,9 +1,16 @@
+import GoodContext from "../goods/GoodContext";
+
 function Good({ good }) {
   return (
     <li className="list-group-item">
       <div className="item">
-        <div className="content">
-          <b>{good.title}</b>
+        <div className="nest-content">
+          <h2>{good.title}</h2>
+          <ul className="list-group">
+            {
+            good.tree_titles ? good.tree_titles.split(",").map((t, i) => (<li key={i} className="list-group-item">{t}</li>)): null
+            }
+          </ul>
         </div>
       </div>
     </li>

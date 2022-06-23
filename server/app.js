@@ -67,12 +67,12 @@ app.get("/front/gerybes", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
     SELECT
-    g.title, g.id, COUNT(t.id) AS trees_count
+    g.title, g.id, COUNT(t.id) AS trees_count, GROUP_CONCAT(t.title) AS tree_titles
     FROM trees AS t
     RIGHT JOIN goods AS g
     ON t.goods_id = g.id
     GROUP BY g.id
-    ORDER BY COUNT(t.id) DESC
+    ORDER BY g.title
   `;
   con.query(sql, (err, result) => {
     if (err) throw err;
