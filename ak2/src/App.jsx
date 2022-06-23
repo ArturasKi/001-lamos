@@ -10,6 +10,7 @@ import axios from "axios";
 import GoodContext from "./Components/goods/GoodContext";
 // import './App.scss';
 import CreateGoods from "./Components/goods/Create";
+import ListGoods from './Components/goods/List';
 
 function App() {
   const [lastUpdate, setLastUpdate] = useState(Date.now());
@@ -24,6 +25,7 @@ function App() {
   //GOODS
   const [goods, setGoods] = useState(null);
   const [createDataGoods, setCreateDataGoods] = useState(null);
+  const [deleteDataGoods, setDeleteDataGoods] = useState(null);
 
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
@@ -93,6 +95,16 @@ function App() {
     setTimeout(() => setMessage(null), 5000);
   };
 
+    // DELETE
+    useEffect(() => {
+      if (null === deleteDataGoods) return;
+      axios.delete("http://localhost:3003/gerybes/" + deleteDataGoods.id)
+        .then((res) => {
+          showMessage(res.data.msg);
+          setLastUpdate(Date.now()); // irasymas, update;
+        });
+    }, [deleteDataGoods]);
+
   return (
     <TreeContext.Provider
       value={{
@@ -111,6 +123,8 @@ function App() {
       <GoodContext.Provider
         value={{
           setCreateData: setCreateDataGoods,
+          goods,
+          setDeleteData: setDeleteDataGoods
         }}
       >
         <div className="container">
@@ -118,6 +132,7 @@ function App() {
             <div className="col-4">
               <Create />
               <CreateGoods />
+              <ListGoods/>
             </div>
             <div className="col-8">
               <List trees={trees}></List>

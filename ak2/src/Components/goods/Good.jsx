@@ -1,36 +1,29 @@
 import { useContext } from "react";
-import TreeContext from "./TreeContext";
+import GoodContext from "./GoodContext";
 
-function Tree({tree}) {
+function Good({good}) {
 
-    const {setDeleteData, setModalData} = useContext(TreeContext);
+    const {setDeleteData} = useContext(GoodContext);
 
     const handleDelete = () => {
-        setDeleteData(tree);
+        setDeleteData(good);
     }
     
-    const handleEdit = () => {
-        setModalData(tree);
-    }
-
     return (
         <li className="list-group-item">
             <div className="item">
                 <div className="content">
-                    <b>{tree.title}</b>
-                    <span>{['Leaf', 'Spike', 'Palm'][tree.type - 1]}</span>
-                    <i>{tree.height.toFixed(2)}</i> <u> {tree.good}</u>
+                    <b>{good.title}</b>
                 </div>
                 <div className="buttons">
-                    <button type="button" className="btn btn-outline-success ml-2" onClick={handleEdit}>Edit</button>
                     <button type="button" className="btn btn-outline-danger ml-2" onClick={handleDelete}>Delete</button>
                 </div>
-            </div>
+            </div> 
         </li>
     )
 }
 
-export default Tree;
+export default Good;
 
 
 

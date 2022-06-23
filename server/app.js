@@ -106,6 +106,17 @@ app.delete("/medziai/:treeId", (req, res) => {
     res.send({ result, msg: { text: "Ok, Bebras", type: "success" } });
   });
 });
+app.delete("/gerybes/:goodId", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  DELETE FROM goods
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.goodId], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Ok, Bebras", type: "success" } });
+  });
+});
 
 // EDIT
 // UPDATE table name
