@@ -34,10 +34,13 @@ app.get("/medziai", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
   SELECT
-  t.title, g.title AS good, height, type, t.id
+  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms, GROUP_CONCAT(c.id) AS coms_id
   FROM trees AS t
   LEFT JOIN goods AS g
   ON t.goods_id = g.id
+  LEFT JOIN comments AS c
+  ON c.tree_id = t.id
+  GROUP BY t.id
 
   `;
   con.query(sql, (err, result) => {
@@ -158,9 +161,10 @@ app.delete("/medziai/:treeId", (req, res) => {
 `;
   con.query(sql, [req.params.treeId], (err, result) => {
     if (err) throw err;
-    res.send({ result, msg: { text: "Ok, Bebras", type: "success" } });
+    res.send({ result, msg: { text: "Ok, Bebras", type: "info" } });
   });
 });
+
 app.delete("/gerybes/:goodId", (req, res) => {
   // delete - routeris, istrinama info is serverio;
   const sql = `
@@ -169,7 +173,19 @@ app.delete("/gerybes/:goodId", (req, res) => {
 `;
   con.query(sql, [req.params.goodId], (err, result) => {
     if (err) throw err;
-    res.send({ result, msg: { text: "Ok, Bebras", type: "success" } });
+    res.send({ result, msg: { text: "Ok, Bebras", type: "info" } });
+  });
+});
+
+app.delete("/komentarai/:comId", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  DELETE FROM comments
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.comId], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Komentaro pabaiga", type: "info" } });
   });
 });
 

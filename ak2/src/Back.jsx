@@ -108,6 +108,15 @@ function Back() {
         });
     }, [deleteDataGoods]);
 
+    // DELETE COMMENT
+    const handleDeleteComment = id => {
+      axios.delete("http://localhost:3003/komentarai/" + id)
+      .then((res) => {
+        showMessage(res.data.msg);
+        setLastUpdate(Date.now()); // irasymas, update;
+      });
+  }
+
   return (
     <TreeContext.Provider
       value={{
@@ -121,6 +130,7 @@ function Back() {
         disableCreate,
         setDisableCreate,
         goods,
+        handleDeleteComment
       }}
     >
       <GoodContext.Provider
