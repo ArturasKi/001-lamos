@@ -30,6 +30,10 @@ function Back() {
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
 
+  useEffect(() => {
+    setInterval(() => setLastUpdate(Date.now()), 3000); // kas 3s parsiunčiama info iš serverio;
+  }, [])
+
   // TREES //
   // READ
   useEffect(() => {
