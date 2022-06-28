@@ -87,7 +87,7 @@ app.get("/front/medziai", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
   SELECT
-  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms
+  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms, t.rates, t.rate_sum
   FROM trees AS t
   LEFT JOIN goods AS g
   ON t.goods_id = g.id
@@ -207,6 +207,23 @@ app.put("/medziai/:treeId", (req, res) => {
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "Ok, Barsukai", type: "success" } });
+    }
+  );
+});
+
+app.put("/front/balsuok/:treeId", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  UPDATE trees
+  SET rates = rates + 1, rate_sum = rate_sum + ?
+  WHERE id = ?
+`;
+  con.query(
+    sql,
+    [req.body.rate, req.params.treeId],
+    (err, result) => {
+      if (err) throw err;
+      res.send({ result, msg: { text: "Ačiū už įvertinimą!", type: "success" } });
     }
   );
 });
