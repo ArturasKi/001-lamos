@@ -1,27 +1,27 @@
-import CatsCrud from './Cats/Crud'
-import ProductsCrud from './Products/Crud'
-import Nav from './Nav';
+import CatsCrud from "./Cats/Crud";
+import ProductsCrud from "./Products/Crud";
+import Nav from "./Nav";
+import { useState } from "react";
+import BackContext from "./BackContext";
 
-function Back({show}) {
+function Back({ show }) {
+    
+  const [createCat, setCreateCat] = useState(null); // kategorijos sukūrimas;
 
-    if(show === 'admin') {
-        return (
+  return (
+    <BackContext.Provider value={{}}>
+      {show === "admin" ? (
         <>
-        <Nav/>
-        <h1>BACK</h1>
+          <Nav />
+          <h1>BACK</h1>
         </>
-        )
-    }
-    if(show === 'cats') {
-        return (
-        <CatsCrud/>
-        )
-    }
-    if(show === 'products') {
-        return (
-        <ProductsCrud/>
-        )
-    }
+      ) : show === "cats" ? (
+        <CatsCrud />
+      ) : show === "products" ? (
+        <ProductsCrud />
+      ) : null}
+    </BackContext.Provider>
+  );
 }
 
 export default Back;
