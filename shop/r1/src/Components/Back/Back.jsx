@@ -5,11 +5,13 @@ import { useState } from "react";
 import BackContext from "./BackContext";
 
 function Back({ show }) {
-    
+
   const [createCat, setCreateCat] = useState(null); // kategorijos sukūrimas;
 
   return (
-    <BackContext.Provider value={{}}>
+    <BackContext.Provider value={{
+        setCreateCat
+    }}>
       {show === "admin" ? (
         <>
           <Nav />
