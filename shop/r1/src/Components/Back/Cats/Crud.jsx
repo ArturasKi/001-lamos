@@ -1,5 +1,6 @@
 import Nav from '../Nav';
 import Create from './Create';
+import List from './List';
 
 function Crud() {
 
@@ -12,6 +13,7 @@ function Crud() {
                     <Create />
                     </div>
                     <div className="col-8">
+                        <List/>
                     </div>
                 </div>
             </div>
