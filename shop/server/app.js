@@ -90,3 +90,21 @@ app.put("/admin/cats/:id", (req, res) => {
     }
   );
 });
+
+//CREATE PRODUCTS
+app.post("/admin/products", (req, res) => {
+  // post - routeris, postinam info i serveri;
+  const sql = `
+  INSERT INTO products
+  (title, price, in_stock, cats_id)
+  VALUES (?, ?, ?, ?)
+`;
+  con.query(
+    sql,
+    [req.body.title, req.body.price, req.body.inStock, req.body.cat],
+    (err, result) => {
+      if (err) throw err;
+      res.send({ result, msg: { text: "New product was created!", type: "success" } });
+    }
+  );
+});
