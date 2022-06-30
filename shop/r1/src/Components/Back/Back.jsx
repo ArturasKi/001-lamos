@@ -4,18 +4,13 @@ import CatsCrud from "./Cats/Crud";
 import ProductsCrud from "./Products/Crud";
 import Nav from "./Nav";
 import BackContext from "./BackContext";
+import { v4 as uuidv4 } from 'uuid'
 
 function Back({ show }) {
 
     const [lastUpdate, setLastUpdate] = useState(Date.now());
 
-    const [messages, setMessages] = useState(
-      [
-      {id: 46464, text: 'valio', type: 'danger'},
-      {id: 4646, text: 'katinai ateina gert', type: 'info'},
-      {id: 464, text: 'rytoj lis', type: 'success'}
-      ]
-    ); 
+    const [messages, setMessages] = useState([]); 
 
     const [cats, setCats] = useState(null);
     const [createCat, setCreateCat] = useState(null); // kategorijos sukūrimas;
@@ -57,10 +52,13 @@ function Back({ show }) {
 
 
     
-
-
-      const showMessage = () => {
-
+      const showMessage = (m) => { // ateina su text ir type
+        const id = uuidv4();
+        m.id = id;  // pridedamas id i message;
+        setMessages(msg => [...msg, m]);
+        setTimeout(() => {
+          setMessages(mess => mess.filter(ms => ms.id !== id)); // tie kurie nelygus palieka, kurie lygus false;
+        }, 5000);
       }
 
   return (
@@ -85,3 +83,8 @@ function Back({ show }) {
 }
 
 export default Back;
+
+
+// {id: 46464, text: 'valio', type: 'danger'},
+// {id: 4646, text: 'katinai ateina gert', type: 'info'},
+// {id: 464, text: 'rytoj lis', type: 'success'}
