@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import Messages from "./Messages";
 
 function Nav() {
 
@@ -27,6 +28,7 @@ function Nav() {
                 </div>
             </div>
         </div>
+        <Messages/>
         </>
     )
 }

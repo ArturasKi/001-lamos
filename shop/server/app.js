@@ -24,7 +24,7 @@ app.listen(port, () => {
     console.log(`Raccoon is listening to port Nr ${port}`);
   });
 
-//CREATE CATS
+//CREATE CATEGORY
 // INSERT INTO table_name (column1, column2, column3, ...)
 // VALUES (value1, value2, value3, ...);
 app.post("/admin/cats", (req, res) => {
@@ -44,7 +44,7 @@ app.post("/admin/cats", (req, res) => {
   );
 });
 
-//READ CATS
+//READ CATEGORIES
 app.get("/admin/cats", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
@@ -56,5 +56,19 @@ app.get("/admin/cats", (req, res) => {
   con.query(sql, (err, result) => {
     if (err) throw err;
     res.send(result);
+  });
+});
+
+//DELETE CATEGORY
+// DELETE FROM table_name WHERE condition;
+app.delete("/admin/cats/:id", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  DELETE FROM cats
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.id], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Category deleted", type: "info" } });
   });
 });
