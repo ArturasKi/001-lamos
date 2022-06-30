@@ -69,6 +69,24 @@ app.delete("/admin/cats/:id", (req, res) => {
 `;
   con.query(sql, [req.params.id], (err, result) => {
     if (err) throw err;
-    res.send({ result, msg: { text: "Category deleted", type: "info" } });
+    res.send({ result, msg: { text: "Category was deleted", type: "danger" } });
   });
+});
+
+//EDIT CATEGORY
+app.put("/admin/cats/:id", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  UPDATE cats
+  SET title = ?
+  WHERE id = ?
+`;
+  con.query(
+    sql,
+    [req.body.title, req.params.id],
+    (err, result) => {
+      if (err) throw err;
+      res.send({ result, msg: { text: "Category was edited", type: "info" } });
+    }
+  );
 });

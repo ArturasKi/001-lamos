@@ -26,7 +26,7 @@ function Create() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           ></input>
-          <small className="form-text text-muted">Enter tree title here.</small>
+          <small className="form-text text-muted">Enter category title here.</small>
         </div>
         <button
           type="button"

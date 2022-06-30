@@ -15,6 +15,8 @@ function Back({ show }) {
     const [cats, setCats] = useState(null);
     const [createCat, setCreateCat] = useState(null); // kategorijos sukūrimas;
     const [deleteCat, setDeleteCat] = useState(null); // kategorijos sukūrimas;
+    const [editCat, setEditCat] = useState(null);
+    const [modalCat, setModalCat] = useState(null);
     
 
     // READ CATEGORY
@@ -33,7 +35,7 @@ function Back({ show }) {
             setLastUpdate(Date.now()); // irasymas, update;
           })
           .catch((error) => {
-            showMessage({ text: error.message, type: "danger" });
+            showMessage({ text: error.message, type: "success" });
           })
       }, [createCat]);
 
@@ -49,6 +51,19 @@ function Back({ show }) {
           showMessage({ text: error.message, type: "danger" });
         })
     }, [deleteCat]);
+
+           // EDIT CATEGORY
+           useEffect(() => {
+            if (null === editCat) return;
+            axios.put("http://localhost:3003/admin/cats/" + editCat.id, editCat)
+              .then((res) => {
+                showMessage(res.data.msg);
+                setLastUpdate(Date.now()); // irasymas, update;
+              })
+              .catch((error) => {
+                showMessage({ text: error.message, type: "info" });
+              })
+          }, [editCat]);
 
 
     
@@ -66,7 +81,10 @@ function Back({ show }) {
         setCreateCat,
         cats,
         setDeleteCat,
-        messages
+        messages,
+        setEditCat,
+        setModalCat,
+        modalCat
     }}>
       {show === "admin" ? (
         <>
