@@ -20,6 +20,7 @@ function Line({line}) {
                     <b>{line.title}</b>
                     <i>{line.price.toFixed(2)} EUR</i>
                     <div className="box" style={line.in_stock ? {backgroundColor: 'coral'} : null}>{}</div>
+                    <span>{new Date(Date.parse(line.lu)).toLocaleString()}</span>
                     <div className="cat">{line.cat}</div>
                 </div>
                 <div className="buttons">

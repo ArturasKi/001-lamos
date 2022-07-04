@@ -113,7 +113,7 @@ app.post("/admin/products", (req, res) => {
 app.get("/admin/products", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
-  SELECT p.id, price, p.title, c.title AS cat, in_stock
+  SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu
   FROM products AS p
   LEFT JOIN cats AS c
   ON c.id = p.cats_id
@@ -137,4 +137,22 @@ app.delete("/admin/products/:id", (req, res) => {
     if (err) throw err;
     res.send({ result, msg: { text: "Product was deleted", type: "danger" } });
   });
+});
+
+//EDIT PRODUCT
+app.put("/admin/products/:id", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  UPDATE products
+  SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?
+  WHERE id = ?
+`;
+  con.query(
+    sql,
+    [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.params.id],
+    (err, result) => {
+      if (err) throw err;
+      res.send({ result, msg: { text: "Product was edited", type: "info" } });
+    }
+  );
 });

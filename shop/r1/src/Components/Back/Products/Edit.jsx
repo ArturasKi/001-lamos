@@ -9,30 +9,44 @@ function Edit() {
   const [price, setPrice] = useState("");
   const [inStock, setInStock] = useState(false);
   const [cat, setCat] = useState('0');
+  const [lu, setLu] = useState('');
 
-  // paspaudus edit, modal data is null gauna objekta, pasikeicia modal data ir persirenderina viskas;
-  useEffect(() => {
+  const setDateFormat = d => {
+    //yyyy-MM-ddThh:mm
+    const date = new Date(Date.parse(d));
+    const y = date.getFullYear();
+    const m = ('' + (date.getMonth() + 1)).padStart(2, '0');
+    const day = ('' + date.getDate()).padStart(2, '0');
+    const h = ('' + date.getHours()).padStart(2, '0');
+    const min = ('' + date.getMinutes()).padStart(2, '0');
+    const out = y + '-' + m + '-' + day + 'T' + h + ':' + min;
+    return out;
+}
+
+useEffect(() => {
     if (null === modalProduct) {
-      return;
+        return;
     }
-    console.log(modalProduct);
     setTitle(modalProduct.title);
     setPrice(modalProduct.price);
+    setLu(setDateFormat(modalProduct.lu));
     setInStock(modalProduct.in_stock ? true : false);
     setCat(cats.filter(c => c.title === modalProduct.cat)[0].id);
-  }, [modalProduct, cats]);
+}, [modalProduct, cats]);
 
-  const handleEdit = () => {
-    const data = { 
-      title, 
-      id: modalProduct.id, 
-      in_stock: parseInt(inStock), 
-      price: parseFloat(),
-      cat: parseInt(cat)
-    }; // edit'e ID nesiredaguoja, paimamas toks koks buvo gautas kuriant;
+const handleEdit = () => {
+    const data = {
+        title,
+        id: modalProduct.id,
+        in_stock: inStock,
+        price: parseFloat(price),
+        cat: parseInt(cat),
+        lu: lu
+    };
+    console.log(data);
     setEditProduct(data);
     setModalProduct(null);
-  };
+}
 
   if (modalProduct === null) {
     return null;
@@ -73,8 +87,17 @@ function Edit() {
           ></input>
           <small className="form-text text-muted">Enter price value here.</small>
         </div>
+        <div className="form-group">
+          <label>Date</label>
+          <input
+            type="datetime-local"
+            className="form-control"
+            value={lu}
+            onChange={(e) => setLu(e.target.value)}
+          ></input>
+        </div>
         <div className="form-group form-check">
-          <input type="checkbox" className="form-check-input" id="in--stock" checked={inStock} onChange={() => setInStock(i => !i)}/>
+          <input type="checkbox" className="form-check-input" id="in--stock--modal" checked={inStock} onChange={() => setInStock(i => !i)}/>
           <label className="form-check-label" htmlFor="in--stock--modal">Check me out</label>
         </div>
         <div className="form-group">
