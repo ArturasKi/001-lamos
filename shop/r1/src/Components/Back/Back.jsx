@@ -20,6 +20,8 @@ function Back({ show }) {
   const [products, setProducts] = useState(null);
   const [createProduct, setCreateProduct] = useState(null); // kategorijos sukūrimas;
   const [deleteProduct, setDeleteProduct] = useState(null);
+  const [editProduct, setEditProduct] = useState(null);
+  const [modalProduct, setModalProduct] = useState(null);
   
 
   // READ CATEGORY
@@ -106,6 +108,20 @@ function Back({ show }) {
       });
   }, [createProduct]);
 
+      // EDIT PRODUCTS
+      useEffect(() => {
+        if (null === editProduct) return;
+        axios
+          .put("http://localhost:3003/admin/products/" + editProduct.id, editProduct)
+          .then((res) => {
+            showMessage(res.data.msg);
+            setLastUpdate(Date.now()); // irasymas, update;
+          })
+          .catch((error) => {
+            showMessage({ text: error.message, type: "info" });
+          });
+      }, [editProduct]);
+
   const showMessage = (m) => {
     // ateina su text ir type
     const id = uuidv4();
@@ -130,7 +146,10 @@ function Back({ show }) {
         setCreateProduct,
         products,
         showMessage,
-        setDeleteProduct
+        setDeleteProduct,
+        setEditProduct,
+        setModalProduct,
+        modalProduct
       }}
     >
       {show === "admin" ? (
