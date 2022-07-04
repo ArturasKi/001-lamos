@@ -101,10 +101,40 @@ app.post("/admin/products", (req, res) => {
 `;
   con.query(
     sql,
-    [req.body.title, req.body.price, req.body.inStock, req.body.cat],
+    [req.body.title ? req.body.title : 0, req.body.price ? req.body.price : 0, req.body.inStock, req.body.cat !== '0' ? req.body.cat : null],
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "New product was created!", type: "success" } });
     }
   );
+});
+
+//READ PRODUCTS
+app.get("/admin/products", (req, res) => {
+  // get - routeris, paimam info is serverio;
+  const sql = `
+  SELECT p.id, price, p.title, c.title AS cat, in_stock
+  FROM products AS p
+  LEFT JOIN cats AS c
+  ON c.id = p.cats_id
+  ORDER by title
+  `;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+//DELETE PRODUCT
+// DELETE FROM table_name WHERE condition;
+app.delete("/admin/products/:id", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  DELETE FROM products
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.id], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Product was deleted", type: "danger" } });
+  });
 });

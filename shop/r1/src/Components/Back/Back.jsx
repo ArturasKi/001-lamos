@@ -17,7 +17,10 @@ function Back({ show }) {
   const [editCat, setEditCat] = useState(null);
   const [modalCat, setModalCat] = useState(null);
 
+  const [products, setProducts] = useState(null);
   const [createProduct, setCreateProduct] = useState(null); // kategorijos sukūrimas;
+  const [deleteProduct, setDeleteProduct] = useState(null);
+  
 
   // READ CATEGORY
   useEffect(() => {
@@ -25,6 +28,13 @@ function Back({ show }) {
       .get("http://localhost:3003/admin/cats")
       .then((res) => setCats(res.data));
   }, [lastUpdate]);
+
+    // READ PRUDUCT
+    useEffect(() => {
+      axios
+        .get("http://localhost:3003/admin/products")
+        .then((res) => setProducts(res.data));
+    }, [lastUpdate]);
 
   // CREATE CATEGORY
   useEffect(() => {
@@ -53,6 +63,20 @@ function Back({ show }) {
         showMessage({ text: error.message, type: "danger" });
       });
   }, [deleteCat]);
+
+    // DELETE PRODUCT
+    useEffect(() => {
+      if (null === deleteProduct) return;
+      axios
+        .delete("http://localhost:3003/admin/products/" + deleteProduct.id)
+        .then((res) => {
+          showMessage(res.data.msg);
+          setLastUpdate(Date.now()); // irasymas, update;
+        })
+        .catch((error) => {
+          showMessage({ text: error.message, type: "danger" });
+        });
+    }, [deleteProduct]);
 
   // EDIT CATEGORY
   useEffect(() => {
@@ -104,6 +128,9 @@ function Back({ show }) {
         modalCat,
         createProduct,
         setCreateProduct,
+        products,
+        showMessage,
+        setDeleteProduct
       }}
     >
       {show === "admin" ? (
