@@ -1,15 +1,18 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import BackContext from "../BackContext";
+import getBase64 from "../../../Functions/getBase64";
 
 function Edit() {
 
-  const { modalProduct, setEditProduct, setModalProduct, cats } = useContext(BackContext);
+  const { modalProduct, setEditProduct, setModalProduct, cats, setDeletePhoto } = useContext(BackContext);
 
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [inStock, setInStock] = useState(false);
   const [cat, setCat] = useState('0');
   const [lu, setLu] = useState('');
+  const fileInput = useRef();
+  const [photoPrint, setPhotoPrint] = useState(null);
 
   const setDateFormat = d => {
     //yyyy-MM-ddThh:mm
@@ -32,7 +35,16 @@ useEffect(() => {
     setLu(setDateFormat(modalProduct.lu));
     setInStock(modalProduct.in_stock ? true : false);
     setCat(cats.filter(c => c.title === modalProduct.cat)[0].id);
+    setPhotoPrint(modalProduct.photo);
 }, [modalProduct, cats]);
+
+const doPhoto = () => {
+  getBase64(fileInput.current.files[0])
+  .then(photo => setPhotoPrint(photo))
+  .catch(_ => {
+    // tylim
+  });
+}
 
 const handleEdit = () => {
     const data = {
@@ -41,11 +53,18 @@ const handleEdit = () => {
         in_stock: inStock ? 1 : 0,
         price: parseFloat(price),
         cat: parseInt(cat),
-        lu: lu
+        lu: lu,
+        photo: photoPrint
     };
     console.log(data);
     setEditProduct(data);
     setModalProduct(null);
+}
+
+const handleDeletePhoto = () => {
+    setDeletePhoto({id: modalProduct.id});
+    setModalProduct(p => ({...p, photo: null}));
+    // setPhotoPrint(null);
 }
 
   if (modalProduct === null) {
@@ -54,7 +73,7 @@ const handleEdit = () => {
 
   return (
     <div className="modal">
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Product changer</h5>
@@ -114,10 +133,19 @@ const handleEdit = () => {
             </select>
             <small className="form-text text-muted">Select category here.</small>
         </div>
+        <div className="form-group">
+          <label>Photo</label>
+          <input ref={fileInput} type="file" className="form-control" onChange={doPhoto}/>
+          <small className="form-text text-muted">Upload photo</small>
+        </div>
+          {
+            photoPrint ? <div className="photo-bin"><img src={photoPrint} alt='nice'/></div> : null
+          }
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-outline-secondary" onClick={() => setModalProduct(null)}>Close</button>
             <button type="button" className="btn btn-outline-primary" onClick={handleEdit}>Save changes</button>
+            <button type="button" className="btn btn-outline-danger" onClick={handleDeletePhoto}>Remove photo</button>
+            <button type="button" className="btn btn-outline-secondary" onClick={() => setModalProduct(null)}>Close</button>
           </div>
         </div>
       </div>

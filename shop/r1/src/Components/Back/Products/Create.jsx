@@ -40,7 +40,7 @@ function Create() {
     setInStock(false);
     setCat("0");
     setPhotoPrint(null);
-    fileInput.current.value = null;
+    fileInput.current.value = null; // panaikina įkeltos foto url;
   }
 
     // const file = fileInput.current.files[0]; // failas nuskaitomas iš fileInput, files[0] - gaunamas failas (vienintėlis, pirmas), naudojamas vietoj values;

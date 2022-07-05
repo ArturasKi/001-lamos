@@ -22,6 +22,7 @@ function Back({ show }) {
   const [deleteProduct, setDeleteProduct] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [modalProduct, setModalProduct] = useState(null);
+  const [deletePhoto, setDeletePhoto] = useState(null);
   
 
   // READ CATEGORY
@@ -79,6 +80,20 @@ function Back({ show }) {
           showMessage({ text: error.message, type: "danger" });
         });
     }, [deleteProduct]);
+
+    // DELETE PHOTO
+    useEffect(() => {
+      if (null === deletePhoto) return;
+      axios
+        .delete("http://localhost:3003/admin/photos/" + deletePhoto.id)
+        .then((res) => {
+          showMessage(res.data.msg);
+          setLastUpdate(Date.now()); // irasymas, update;
+        })
+        .catch((error) => {
+          showMessage({ text: error.message, type: "danger" });
+        });
+    }, [deletePhoto]);
 
   // EDIT CATEGORY
   useEffect(() => {
@@ -149,7 +164,8 @@ function Back({ show }) {
         setDeleteProduct,
         setEditProduct,
         setModalProduct,
-        modalProduct
+        modalProduct,
+        setDeletePhoto
       }}
     >
       {show === "admin" ? (

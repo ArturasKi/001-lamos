@@ -114,7 +114,7 @@ app.post("/admin/products", (req, res) => {
 app.get("/admin/products", (req, res) => {
   // get - routeris, paimam info is serverio;
   const sql = `
-  SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu
+  SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
   FROM products AS p
   LEFT JOIN cats AS c
   ON c.id = p.cats_id
@@ -145,15 +145,33 @@ app.put("/admin/products/:id", (req, res) => {
   // delete - routeris, istrinama info is serverio;
   const sql = `
   UPDATE products
-  SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?
+  SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?, photo = ?
   WHERE id = ?
 `;
   con.query(
     sql,
-    [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.params.id],
+    [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.body.photo, req.params.id],
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "Product was edited", type: "info" } });
+    }
+  );
+});
+
+// DELETE PHOTO
+app.put("/admin/photos/:id", (req, res) => {
+  // delete - routeris, istrinama info is serverio;
+  const sql = `
+  UPDATE products
+  SET photo = null
+  WHERE id = ?
+`;
+  con.query(
+    sql,
+    [req.params.id],
+    (err, result) => {
+      if (err) throw err;
+      res.send({ result, msg: { text: "Photo was removed", type: "danger" } });
     }
   );
 });
