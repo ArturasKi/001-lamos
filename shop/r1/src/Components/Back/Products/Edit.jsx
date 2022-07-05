@@ -38,7 +38,7 @@ const handleEdit = () => {
     const data = {
         title,
         id: modalProduct.id,
-        in_stock: inStock,
+        in_stock: inStock ? 1 : 0,
         price: parseFloat(price),
         cat: parseInt(cat),
         lu: lu

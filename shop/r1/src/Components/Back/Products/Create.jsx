@@ -1,5 +1,7 @@
+import { useRef } from "react";
 import { useContext, useState } from "react";
 import BackContext from "../BackContext";
+import getBase64 from "../../../Functions/getBase64";
 
 function Create() {
   const { cats, setCreateProduct, showMessage } = useContext(BackContext);
@@ -7,21 +9,50 @@ function Create() {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [inStock, setInStock] = useState(false);
-  const [cat, setCat] = useState('0');
+  const [cat, setCat] = useState("0");
+  const fileInput = useRef();
 
   const handleCreate = () => {
-
-    if (cat === '0') {
-      showMessage({text: 'Please select category!', type: 'danger'});
+    if (cat === "0") {
+      showMessage({ text: "Please select category!", type: "danger" });
       return;
     }
 
-    const data = { title, price: parseFloat(price), inStock: inStock ? 1 : 0, cat: parseInt(cat)}; // parseFloat -> gauname skaiciu;
-    setCreateProduct(data);
-    setTitle('');
-    setPrice('');
-    setInStock(false);
-    setCat('0');
+    const file = fileInput.current.files[0]; // failas nuskaitomas iš fileInput, files[0] - gaunamas failas (vienintėlis, pirmas), naudojamas vietoj values;
+
+    if (file) {
+      // jei failas (foto) egzistuoja;
+      getBase64(file) // paduodamas failas į funkciją;
+        .then((photo) => {
+          // nuotraukos kaip failo stringo atitikmuo; set'inama, kai sulaukiama foto;
+          console.log(photo);
+          const data = {
+            title,
+            price: parseFloat(price),
+            inStock: inStock ? 1 : 0,
+            cat: parseInt(cat),
+            photo,
+          };
+          setCreateProduct(data);
+          setTitle("");
+          setPrice("");
+          setInStock(false);
+          setCat("0");
+        });
+    } else {
+      const data = {
+        title,
+        price: parseFloat(price),
+        inStock: inStock ? 1 : 0,
+        cat: parseInt(cat),
+        photo: null, // jei foto nėra, išsiunčiama be foto; set'inama iškart;
+      };
+      setCreateProduct(data);
+      setTitle("");
+      setPrice("");
+      setInStock(false);
+      setCat("0");
+    }
   };
 
   return (
@@ -38,7 +69,9 @@ function Create() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           ></input>
-          <small className="form-text text-muted">Enter product title here.</small>
+          <small className="form-text text-muted">
+            Enter product title here.
+          </small>
         </div>
         <div className="form-group">
           <label>Price</label>
@@ -48,35 +81,53 @@ function Create() {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           ></input>
-          <small className="form-text text-muted">Enter price value here.</small>
+          <small className="form-text text-muted">
+            Enter price value here.
+          </small>
         </div>
         <div className="form-group form-check">
-          <input type="checkbox" className="form-check-input" id="in--stock" checked={inStock} onChange={() => setInStock(i => !i)}/>
-          <label className="form-check-label" htmlFor="in--stock">Check me out</label>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="in--stock"
+            checked={inStock}
+            onChange={() => setInStock((i) => !i)}
+          />
+          <label className="form-check-label" htmlFor="in--stock">
+            Check me out
+          </label>
         </div>
         <div className="form-group">
           <label>Categories</label>
-            <select
-                className="form-control"
-                value={cat}
-                onChange={(e) => setCat(e.target.value)}
-              >
-              <option value="0">Select category</option>
-                {
-                  cats ? cats.map(c => <option key={c.id} value={c.id}>{c.title}</option>) : null
-                }
-            </select>
-            <small className="form-text text-muted">Select category here.</small>
+          <select
+            className="form-control"
+            value={cat}
+            onChange={(e) => setCat(e.target.value)}
+          >
+            <option value="0">Select category</option>
+            {cats
+              ? cats.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))
+              : null}
+          </select>
+          <small className="form-text text-muted">Select category here.</small>
         </div>
-
-
-
-
+        <div className="form-group">
+          <label>Photo</label>
+          <input ref={fileInput} type="file" className="form-control" />
+          <small className="form-text text-muted">Upload photo</small>
+        </div>
 
         <button
           type="button"
           className="btn btn-outline-primary with-loader"
-          onClick={handleCreate}>Create</button>
+          onClick={handleCreate}
+        >
+          Create
+        </button>
       </div>
     </div>
   );
