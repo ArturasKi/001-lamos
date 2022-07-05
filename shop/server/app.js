@@ -2,9 +2,10 @@ const express = require("express"); // užkrauna biblioteką;
 const app = express(); // pasakom, jog biblioteka vadinasi app;
 const port = 3003; // pasako kuriam port'e veiks;
 const cors = require("cors");
+app.use(express.json({limit: '10mb'}));
 app.use(cors());
 const mysql = require("mysql");
-
+// app.use(express.urlencoded({limit: '50mb'}));
 app.use(
   express.urlencoded({
     extended: true,
@@ -96,12 +97,12 @@ app.post("/admin/products", (req, res) => {
   // post - routeris, postinam info i serveri;
   const sql = `
   INSERT INTO products
-  (title, price, in_stock, cats_id)
-  VALUES (?, ?, ?, ?)
+  (title, price, in_stock, cats_id, photo)
+  VALUES (?, ?, ?, ?, ?)
 `;
   con.query(
     sql,
-    [req.body.title ? req.body.title : 0, req.body.price ? req.body.price : 0, req.body.inStock, req.body.cat !== '0' ? req.body.cat : null],
+    [req.body.title ? req.body.title : 0, req.body.price ? req.body.price : 0, req.body.inStock, req.body.cat !== '0' ? req.body.cat : null, req.body.photo],
     (err, result) => {
       if (err) throw err;
       res.send({ result, msg: { text: "New product was created!", type: "success" } });
