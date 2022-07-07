@@ -5,6 +5,7 @@ import ProductsCrud from "./Products/Crud";
 import Nav from "./Nav";
 import BackContext from "./BackContext";
 import { v4 as uuidv4 } from "uuid";
+import { authConfig } from '../../Functions/auth';
 
 function Back({ show }) {
   const [lastUpdate, setLastUpdate] = useState(Date.now());
@@ -28,14 +29,14 @@ function Back({ show }) {
   // READ CATEGORY
   useEffect(() => {
     axios
-      .get("http://localhost:3003/admin/cats")
+      .get("http://localhost:3003/admin/cats", authConfig())
       .then((res) => setCats(res.data));
   }, [lastUpdate]);
 
     // READ PRUDUCT
     useEffect(() => {
       axios
-        .get("http://localhost:3003/admin/products")
+        .get("http://localhost:3003/admin/products", authConfig())
         .then((res) => setProducts(res.data));
     }, [lastUpdate]);
 
