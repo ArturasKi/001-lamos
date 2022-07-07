@@ -27,7 +27,7 @@ const doAuth = function(req, res, next) {
   if (0 === req.url.indexOf('/admin')) {
       const sql = `
       SELECT
-      name
+      name, role
       FROM users
       WHERE session = ?
   `;
@@ -83,6 +83,7 @@ app.post("/login", (req, res) => {
       }
   });
 });
+
 
 app.listen(port, () => {
     console.log(`Raccoon is listening to port Nr ${port}`);
