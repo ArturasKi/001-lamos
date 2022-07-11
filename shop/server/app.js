@@ -1,248 +1,236 @@
-const express = require("express"); // užkrauna biblioteką;
-const app = express(); // pasakom, jog biblioteka vadinasi app;
-const port = 3003; // pasako kuriam port'e veiks;
+const express = require("express");
+const app = express();
+const port = 3003;
 const cors = require("cors");
-app.use(express.json({limit: '10mb'}));
+app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 const mysql = require("mysql");
-md5 = require('js-md5');
+const md5 = require('js-md5');
 const uuid = require('uuid');
 
 app.use(
-  express.urlencoded({
-    extended: true,
-  })
+    express.urlencoded({
+        extended: true,
+    })
 );
 app.use(express.json());
 
 const con = mysql.createConnection({
-  // daromas connection prie DB
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "la_ma_shop",
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "la_ma_shop",
 });
 
 const doAuth = function(req, res, next) {
-  if (0 === req.url.indexOf('/admin')) {
-      const sql = `
-      SELECT
-      name, role
-      FROM users
-      WHERE session = ?
-  `;
-      con.query(
-          sql, [req.headers['authorization'] || ''],
-          (err, results) => {
-              if (err) throw err;
-              if (!results.length || results[0].role !== 'admin') {
-                  res.status(401).send({});
-                  req.connection.destroy();
-              } else {
-                  next();
-              }
-          }
-      );
-  } else {
-      next();
-  }
+    if (0 === req.url.indexOf('/admin')) { // admin
+        const sql = `
+        SELECT
+        name, role
+        FROM users
+        WHERE session = ?
+    `;
+        con.query(
+            sql, [req.headers['authorization'] || ''],
+            (err, results) => {
+                if (err) throw err;
+                if (!results.length || results[0].role !== 'admin') {
+                    res.status(401).send({});
+                    req.connection.destroy();
+                } else {
+                    next();
+                }
+            }
+        );
+    } else if (0 === req.url.indexOf('/login-check') || 0 === req.url.indexOf('/login')) {
+        next();
+    } else { // fron
+        const sql = `
+        SELECT
+        name, role
+        FROM users
+        WHERE session = ?
+    `;
+        con.query(
+            sql, [req.headers['authorization'] || ''],
+            (err, results) => {
+                if (err) throw err;
+                if (!results.length) {
+                    res.status(401).send({});
+                    req.connection.destroy();
+                } else {
+                    next();
+                }
+            }
+        );
+    }
 }
 app.use(doAuth)
 
 // AUTH
 app.get("/login-check", (req, res) => {
-  const sql = `
-  SELECT
-  name
-  FROM users
-  WHERE session = ? AND role = ?
-  `;
-  con.query(sql, [req.headers['authorization'] || '', req.query.role], (err, result) => {
-      if (err) throw err;
-      if (!result.length) {
-          res.send({ msg: 'error' });
-      } else {
-          res.send({ msg: 'ok' });
-      }
-  });
+    let sql;
+    let requests;
+    if (req.query.role === 'admin') {
+        sql = `
+        SELECT
+        name
+        FROM users
+        WHERE session = ? AND role = ?
+        `;
+        requests = [req.headers['authorization'] || '', req.query.role];
+    } else {
+        sql = `
+        SELECT
+        name
+        FROM users
+        WHERE session = ?
+        `;
+        requests = [req.headers['authorization'] || ''];
+    }
+    con.query(sql, requests, (err, result) => {
+        if (err) throw err;
+        if (!result.length) {
+            res.send({ msg: 'error' });
+        } else {
+            res.send({ msg: 'ok' });
+        }
+    });
 });
 
 app.post("/login", (req, res) => {
-  const key = uuid.v4();
-  const sql = `
-  UPDATE users
-  SET session = ?
-  WHERE name = ? AND pass = ?
-`;
-  con.query(sql, [key, req.body.user, md5(req.body.pass)], (err, result) => {
-      if (err) throw err;
-      if (!result.affectedRows) {
-          res.send({ msg: 'error', key: '' });
-      } else {
-          res.send({ msg: 'ok', key });
-      }
-  });
-});
-
-
-app.listen(port, () => {
-    console.log(`Raccoon is listening to port Nr ${port}`);
-  });
-
-//CREATE CATEGORY
-// INSERT INTO table_name (column1, column2, column3, ...)
-// VALUES (value1, value2, value3, ...);
-app.post("/admin/cats", (req, res) => {
-  // post - routeris, postinam info i serveri;
-  const sql = `
-  INSERT INTO cats
-  (title)
-  VALUES (?)
-`;
-  con.query(
-    sql,
-    [req.body.title],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "New category was created!", type: "success" } });
-    }
-  );
-});
-
-//READ CATEGORIES
-app.get("/admin/cats", (req, res) => {
-  // get - routeris, paimam info is serverio;
-  const sql = `
-  SELECT
-  *
-  FROM cats
-  ORDER by title
+    const key = uuid.v4();
+    const sql = `
+    UPDATE users
+    SET session = ?
+    WHERE name = ? AND pass = ?
   `;
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+    con.query(sql, [key, req.body.user, md5(req.body.pass)], (err, result) => {
+        if (err) throw err;
+        if (!result.affectedRows) {
+            res.send({ msg: 'error', key: '' });
+        } else {
+            res.send({ msg: 'ok', key });
+        }
+    });
 });
 
-//DELETE CATEGORY
-// DELETE FROM table_name WHERE condition;
+
+// CATS
+app.post("/admin/cats", (req, res) => {
+    const sql = `
+    INSERT INTO cats
+    (title)
+    VALUES (?)
+    `;
+    con.query(sql, [req.body.title], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, new Cat was created', type: 'success' } });
+    });
+});
+
+app.get("/admin/cats", (req, res) => {
+    const sql = `
+  SELECT *
+  FROM cats
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 app.delete("/admin/cats/:id", (req, res) => {
-  // delete - routeris, istrinama info is serverio;
-  const sql = `
-  DELETE FROM cats
-  WHERE id = ?
-`;
-  con.query(sql, [req.params.id], (err, result) => {
-    if (err) throw err;
-    res.send({ result, msg: { text: "Category was deleted", type: "danger" } });
-  });
+    const sql = `
+    DELETE FROM cats
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Cat gone', type: 'success' } });
+    });
 });
 
-//EDIT CATEGORY
 app.put("/admin/cats/:id", (req, res) => {
-  // delete - routeris, istrinama info is serverio;
-  const sql = `
-  UPDATE cats
-  SET title = ?
-  WHERE id = ?
-`;
-  con.query(
-    sql,
-    [req.body.title, req.params.id],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "Category was edited", type: "info" } });
-    }
-  );
+    const sql = `
+    UPDATE cats
+    SET title = ?
+    WHERE id = ?
+    `;
+    con.query(sql, [req.body.title, req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Cat updated. Now it is as new', type: 'success' } });
+    });
 });
 
-//CREATE PRODUCTS
+
+// Products
 app.post("/admin/products", (req, res) => {
-  // post - routeris, postinam info i serveri;
-  const sql = `
-  INSERT INTO products
-  (title, price, in_stock, cats_id, photo)
-  VALUES (?, ?, ?, ?, ?)
-`;
-  con.query(
-    sql,
-    [req.body.title ? req.body.title : 0, req.body.price ? req.body.price : 0, req.body.inStock, req.body.cat !== '0' ? req.body.cat : null, req.body.photo],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "New product was created!", type: "success" } });
-    }
-  );
+    const sql = `
+    INSERT INTO products
+    (title, price, in_stock, cats_id, photo)
+    VALUES (?, ?, ?, ?, ?)
+    `;
+    con.query(sql, [req.body.title, req.body.price, req.body.inStock, req.body.cat, req.body.photo], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, new and shiny product was created', type: 'success' } });
+    });
 });
 
-//READ PRODUCTS
 app.get("/admin/products", (req, res) => {
-  // get - routeris, paimam info is serverio;
-  const sql = `
+    const sql = `
   SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
   FROM products AS p
   LEFT JOIN cats AS c
   ON c.id = p.cats_id
-  ORDER by title
-  `;
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
 });
 
-//DELETE PRODUCT
-// DELETE FROM table_name WHERE condition;
 app.delete("/admin/products/:id", (req, res) => {
-  // delete - routeris, istrinama info is serverio;
-  const sql = `
-  DELETE FROM products
-  WHERE id = ?
-`;
-  con.query(sql, [req.params.id], (err, result) => {
-    if (err) throw err;
-    res.send({ result, msg: { text: "Product was deleted", type: "danger" } });
-  });
+    const sql = `
+    DELETE FROM products
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Product gone', type: 'success' } });
+    });
 });
 
-//EDIT PRODUCT
 app.put("/admin/products/:id", (req, res) => {
-  // delete - routeris, istrinama info is serverio;
-  const sql = `
-  UPDATE products
-  SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?, photo = ?
-  WHERE id = ?
-`;
-  con.query(
-    sql,
-    [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.body.photo, req.params.id],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "Product was edited", type: "info" } });
-    }
-  );
+    const sql = `
+    UPDATE products
+    SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?, photo = ?
+    WHERE id = ?
+    `;
+    con.query(sql, [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.body.photo, req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Cat updated. Now it is as new', type: 'success' } });
+    });
 });
 
-// DELETE PHOTO
-app.put("/admin/photos/:id", (req, res) => {
-  // delete - routeris, istrinama info is serverio;
-  const sql = `
-  UPDATE products
-  SET photo = null
-  WHERE id = ?
-`;
-  con.query(
-    sql,
-    [req.params.id],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "Photo was removed", type: "danger" } });
-    }
-  );
+app.delete("/admin/photos/:id", (req, res) => {
+    const sql = `
+    UPDATE products
+    SET photo = null
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, photo gone. Have a nice day.', type: 'success' } });
+    });
 });
 
 
 
 
 
-
-
+app.listen(port, () => {
+    console.log(`Bebras klauso porto Nr ${port}`);
+});
