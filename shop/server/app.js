@@ -192,6 +192,20 @@ app.get("/admin/products", (req, res) => {
     });
 });
 
+app.get("/products", (req, res) => {
+    const sql = `
+  SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+  FROM products AS p
+  LEFT JOIN cats AS c
+  ON c.id = p.cats_id
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 app.delete("/admin/products/:id", (req, res) => {
     const sql = `
     DELETE FROM products
