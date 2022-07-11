@@ -141,6 +141,20 @@ app.get("/admin/cats", (req, res) => {
     });
 });
 
+
+//FRONT CATS
+app.get("/cats", (req, res) => {
+    const sql = `
+  SELECT *
+  FROM cats
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 app.delete("/admin/cats/:id", (req, res) => {
     const sql = `
     DELETE FROM cats
@@ -192,6 +206,7 @@ app.get("/admin/products", (req, res) => {
     });
 });
 
+//FRONT PRODUCTS
 app.get("/products", (req, res) => {
     const sql = `
   SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
