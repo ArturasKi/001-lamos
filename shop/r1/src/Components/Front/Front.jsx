@@ -11,6 +11,13 @@ function Front() {
   const [cats, setCats] = useState(null);
   const [filter, setFilter] = useState(0); // value='0'
 
+  const [cat, setCat] = useState(0);
+
+  const doFilter = cid => {
+    setCat(cid);
+    setFilter(parseInt(cid));
+  }
+
   // READ PRUDUCT
   useEffect(() => {
 
@@ -39,7 +46,10 @@ function Front() {
         products,
         setProducts,
         cats,
-        setFilter
+        setFilter,
+        cat,
+        setCat,
+        doFilter
       }}
     >
       <Nav />

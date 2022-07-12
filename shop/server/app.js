@@ -213,7 +213,7 @@ app.get("/products", (req, res) => {
     console.log(req.query['cat-id']);
     if (!req.query['cat-id']) {
         sql = `
-        SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        SELECT p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
@@ -223,7 +223,7 @@ app.get("/products", (req, res) => {
     requests = [];
 } else {
     sql = `
-        SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        SELECT p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
