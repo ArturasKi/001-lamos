@@ -208,14 +208,31 @@ app.get("/admin/products", (req, res) => {
 
 //FRONT PRODUCTS
 app.get("/products", (req, res) => {
-    const sql = `
-  SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
-  FROM products AS p
-  LEFT JOIN cats AS c
-  ON c.id = p.cats_id
-  ORDER BY title
-`;
-    con.query(sql, (err, result) => {
+    let sql;
+    let requests;
+    console.log(req.query['cat-id']);
+    if (!req.query['cat-id']) {
+        sql = `
+        SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        FROM products AS p
+        LEFT JOIN cats AS c
+        ON c.id = p.cats_id
+        ORDER BY title
+      `;
+    
+    requests = [];
+} else {
+    sql = `
+        SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        FROM products AS p
+        LEFT JOIN cats AS c
+        ON c.id = p.cats_id
+        WHERE p.cats_id = ?
+        ORDER BY title
+      `;
+      requests = [req.query['cat-id']]
+}
+    con.query(sql, requests, (err, result) => {
         if (err) throw err;
         res.send(result);
     });

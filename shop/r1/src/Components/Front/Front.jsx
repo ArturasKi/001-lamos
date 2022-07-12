@@ -9,13 +9,22 @@ import SortFilter from "./SortFilter";
 function Front() {
   const [products, setProducts] = useState(null);
   const [cats, setCats] = useState(null);
+  const [filter, setFilter] = useState(0); // value='0'
 
   // READ PRUDUCT
   useEffect(() => {
+
+    let query;
+    if (filter === 0) {
+      query = ''; // jei filtras yra 0, tai query yra tuščias string'as, nieko jame nėra;
+    } else {
+      query = '?cat-id=' + filter // ? reiškia, kad perduodam kintamąjį per klaustuką;
+    }
+
     axios
-      .get("http://localhost:3003/products", authConfig())
+      .get("http://localhost:3003/products/" + query, authConfig())
       .then((res) => setProducts(res.data.map((p, i) => ({ ...p, row: i }))));
-  }, []);
+  }, [filter]);
 
   // READ CATEGORIES
   useEffect(() => {
@@ -29,7 +38,8 @@ function Front() {
       value={{
         products,
         setProducts,
-        cats
+        cats,
+        setFilter
       }}
     >
       <Nav />

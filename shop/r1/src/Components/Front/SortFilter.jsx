@@ -2,10 +2,15 @@ import { useState, useContext } from "react";
 import FrontContext from "./FrontContext";
 
 function SortFilter() {
-  const { setProducts, products, cats } = useContext(FrontContext);
+  const { setProducts, products, cats, setFilter } = useContext(FrontContext);
 
   const [sortBy, setSortBy] = useState("default");
   const [cat, setCat] = useState(0);
+
+  const doFilter = e => {
+    setCat(e.target.value);
+    setFilter(parseInt(e.target.value));
+  }
 
   const doSort = (e) => {
     setSortBy(e.target.value);
@@ -66,7 +71,7 @@ function SortFilter() {
                 <select
                   className="form-control"
                   value={cat}
-                  onChange={(e) => setCat(e.target.value)}
+                  onChange={doFilter}
                 >
                   <option value="0">All cats</option>
                   {cats
