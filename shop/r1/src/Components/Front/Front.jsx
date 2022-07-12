@@ -12,6 +12,7 @@ function Front() {
   const [filter, setFilter] = useState(0); // value='0'
 
   const [cat, setCat] = useState(0);
+  const [search, setSearch] = useState('');
 
   const doFilter = cid => {
     setCat(cid);
@@ -22,16 +23,18 @@ function Front() {
   useEffect(() => {
 
     let query;
-    if (filter === 0) {
+    if (filter === 0 && !search) {
       query = ''; // jei filtras yra 0, tai query yra tuščias string'as, nieko jame nėra;
-    } else {
+    } else if (filter) {
       query = '?cat-id=' + filter // ? reiškia, kad perduodam kintamąjį per klaustuką;
+    } else if (search) {
+      query = '?s=' + search
     }
 
     axios
       .get("http://localhost:3003/products/" + query, authConfig())
       .then((res) => setProducts(res.data.map((p, i) => ({ ...p, row: i }))));
-  }, [filter]);
+  }, [filter, search]);
 
   // READ CATEGORIES
   useEffect(() => {
@@ -49,7 +52,8 @@ function Front() {
         setFilter,
         cat,
         setCat,
-        doFilter
+        doFilter,
+        setSearch
       }}
     >
       <Nav />

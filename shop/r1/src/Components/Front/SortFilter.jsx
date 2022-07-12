@@ -2,13 +2,17 @@ import { useState, useContext } from "react";
 import FrontContext from "./FrontContext";
 
 function SortFilter() {
-  const { setProducts, products, cats, cat, doFilter } = useContext(FrontContext);
+  const { setProducts, products, cats, cat, doFilter, setSearch } = useContext(FrontContext);
 
   const [sortBy, setSortBy] = useState("default");
+
+  const [s, setS] = useState('');
+
+  const doSearch = e => {
+    setS(e.target.value);
+    setSearch(e.target.value);
+  }
   
-
-
-
   const doSort = (e) => {
     setSortBy(e.target.value);
     const p = [...products];
@@ -82,6 +86,12 @@ function SortFilter() {
                 <small className="form-text text-muted">
                   Select category here.
                 </small>
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="form-group">
+                <label>Search</label>
+                <input className="form-control" type='text' value={s} onChange={doSearch}></input>
               </div>
             </div>
           </div>
