@@ -30,7 +30,6 @@ function Front() {
     } else if (search) {
       query = '?s=' + search
     }
-
     axios
       .get("http://localhost:3003/products/" + query, authConfig())
       .then((res) => setProducts(res.data.map((p, i) => ({ ...p, row: i }))));

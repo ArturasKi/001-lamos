@@ -98,6 +98,7 @@ app.get("/login-check", (req, res) => {
     });
 });
 
+//LOGIN
 app.post("/login", (req, res) => {
     const key = uuid.v4();
     const sql = `
@@ -116,7 +117,7 @@ app.post("/login", (req, res) => {
 });
 
 
-// CATS
+//BACK CREATE CATS
 app.post("/admin/cats", (req, res) => {
     const sql = `
     INSERT INTO cats
@@ -129,6 +130,7 @@ app.post("/admin/cats", (req, res) => {
     });
 });
 
+//BACK CATS
 app.get("/admin/cats", (req, res) => {
     const sql = `
   SELECT *
@@ -155,6 +157,7 @@ app.get("/cats", (req, res) => {
     });
 });
 
+//BACK DELETE CATS
 app.delete("/admin/cats/:id", (req, res) => {
     const sql = `
     DELETE FROM cats
@@ -166,6 +169,7 @@ app.delete("/admin/cats/:id", (req, res) => {
     });
 });
 
+//BACK EDIT CATS
 app.put("/admin/cats/:id", (req, res) => {
     const sql = `
     UPDATE cats
@@ -179,7 +183,7 @@ app.put("/admin/cats/:id", (req, res) => {
 });
 
 
-// Products
+//BACK CREATE PRODUCTS
 app.post("/admin/products", (req, res) => {
     const sql = `
     INSERT INTO products
@@ -192,6 +196,7 @@ app.post("/admin/products", (req, res) => {
     });
 });
 
+//BACK PRODUCTS
 app.get("/admin/products", (req, res) => {
     const sql = `
   SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
@@ -248,6 +253,7 @@ app.get("/products", (req, res) => {
     });
 });
 
+//BACK DELETE PRODUCT
 app.delete("/admin/products/:id", (req, res) => {
     const sql = `
     DELETE FROM products
@@ -259,6 +265,7 @@ app.delete("/admin/products/:id", (req, res) => {
     });
 });
 
+//BACK EDIT PRODUCT
 app.put("/admin/products/:id", (req, res) => {
     const sql = `
     UPDATE products
@@ -271,6 +278,7 @@ app.put("/admin/products/:id", (req, res) => {
     });
 });
 
+//BACK DELETE PHOTO
 app.delete("/admin/photos/:id", (req, res) => {
     const sql = `
     UPDATE products
@@ -282,10 +290,6 @@ app.delete("/admin/photos/:id", (req, res) => {
         res.send({ result, msg: { text: 'OK, photo gone. Have a nice day.', type: 'success' } });
     });
 });
-
-
-
-
 
 app.listen(port, () => {
     console.log(`Bebras klauso porto Nr ${port}`);
