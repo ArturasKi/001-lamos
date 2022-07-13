@@ -7,12 +7,16 @@ import FrontContext from "./FrontContext";
 import SortFilter from "./SortFilter";
 
 function Front() {
+
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
+
   const [products, setProducts] = useState(null);
   const [cats, setCats] = useState(null);
   const [filter, setFilter] = useState(0); // value='0'
 
   const [cat, setCat] = useState(0);
   const [search, setSearch] = useState('');
+  const [addCom, setAddCom] = useState(null);
 
   const doFilter = cid => {
     setCat(cid);
@@ -33,7 +37,7 @@ function Front() {
     axios
       .get("http://localhost:3003/products/" + query, authConfig())
       .then((res) => setProducts(res.data.map((p, i) => ({ ...p, row: i }))));
-  }, [filter, search]);
+  }, [filter, search, lastUpdate]);
 
   // READ CATEGORIES
   useEffect(() => {
@@ -41,6 +45,17 @@ function Front() {
       .get("http://localhost:3003/cats", authConfig())
       .then((res) => setCats(res.data));
   }, []);
+
+  
+  // CREATE COMMENT
+  useEffect(() => {
+    if (null === addCom) return;
+    axios
+      .post("http://localhost:3003/comments", addCom, authConfig())
+      .then((res) => {
+        setLastUpdate(Date.now()); // irasymas, update;
+      })
+  }, [addCom]);
 
   return (
     <FrontContext.Provider
@@ -52,7 +67,8 @@ function Front() {
         cat,
         setCat,
         doFilter,
-        setSearch
+        setSearch,
+        setAddCom
       }}
     >
       <Nav />

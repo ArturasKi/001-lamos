@@ -83,9 +83,6 @@ function SortFilter() {
                       ))
                     : null}
                 </select>
-                <small className="form-text text-muted">
-                  Select category here.
-                </small>
               </div>
             </div>
             <div className="col-4">
