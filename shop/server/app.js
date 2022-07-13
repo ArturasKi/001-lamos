@@ -196,6 +196,19 @@ app.post("/admin/products", (req, res) => {
     });
 });
 
+//FRONT CREATE COMMENTS
+app.post("/comments", (req, res) => {
+    const sql = `
+    INSERT INTO comments
+    (com, product_id)
+    VALUES (?, ?)
+    `;
+    con.query(sql, [req.body.com, req.body.product_id], (err, result) => {
+        if (err) throw err;
+        res.send({ result });
+    });
+});
+
 //BACK PRODUCTS
 app.get("/admin/products", (req, res) => {
     const sql = `
