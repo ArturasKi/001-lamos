@@ -146,8 +146,12 @@ app.get("/admin/cats", (req, res) => {
 //BACK COMMENTS
 app.get("/admin/comments", (req, res) => {
     const sql = `
-  SELECT *
-  FROM comments
+  SELECT com.id AS id, com, title
+  FROM comments AS com
+  INNER JOIN
+  products AS p
+  ON com.product_id = p.id
+  ORDER BY p.title
 `;
     con.query(sql, (err, result) => {
         if (err) throw err;

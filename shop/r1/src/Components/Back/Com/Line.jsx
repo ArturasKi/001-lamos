@@ -13,7 +13,10 @@ function Line({line}) {
         <li className="list-group-item">
             <div className="item">
                 <div className="content">
-                    <b>{line.com}</b>
+                    <div className="com-bin">
+                        <h5>{line.title}</h5>
+                        <p>{line.com}</p>
+                    </div>
                 </div>
                 <div className="buttons">
                     <button type="button" className="btn btn-outline-danger ml-2" onClick={handleDelete}>Delete</button>

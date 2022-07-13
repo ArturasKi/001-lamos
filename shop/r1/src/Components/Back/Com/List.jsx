@@ -2,7 +2,6 @@ import { useContext } from "react";
 import Line from "./Line";
 import BackContext from "../BackContext";
 
-
 function List() {
 
     const { comments } = useContext(BackContext);
