@@ -28,6 +28,11 @@ function Line({line}) {
                 </div>
                 <div className="comments">
                     <h5>Comments</h5>
+                    <ul className="list-group">
+                        {
+                            line.com.map(c => <li key={c.id} className="list-group-item">{c.com}</li>)
+                        }
+                    </ul>
                     <div className="form-group">
                         <label>Add comment</label>
                         <textarea value={com} className="form-control" rows="3" onChange={e => setCom(e.target.value)}></textarea>

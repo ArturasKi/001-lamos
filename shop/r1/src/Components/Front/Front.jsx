@@ -36,7 +36,43 @@ function Front() {
     }
     axios
       .get("http://localhost:3003/products/" + query, authConfig())
-      .then((res) => setProducts(res.data.map((p, i) => ({ ...p, row: i }))));
+      .then((res) => {
+
+        console.log(res.data);
+
+        const products = new Map();
+
+        res.data.forEach(p => {
+          let comment;
+          if (null === p.com) {
+            comment = null;
+          } else {
+            comment = {id: p.com_id, com: p.com};
+          }
+          if (products.has(p.id)) {
+            const pr = products.get(p.id);
+            if (comment) {
+              pr.com.push(comment);
+            }
+          } else {
+            products.set(p.id, {...p});
+            const pr = products.get(p.id);
+            pr.com = [];
+            delete pr.com_id;
+            if (comment) {
+              pr.com.push(comment);
+            }
+          }
+          
+        });
+
+        console.log([...products].map(e => e[1]));
+      
+        setProducts([...products].map(e => e[1]).map((p, i) => ({ ...p, row: i })));
+
+    });
+
+
   }, [filter, search, lastUpdate]);
 
   // READ CATEGORIES
