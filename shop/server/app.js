@@ -143,6 +143,18 @@ app.get("/admin/cats", (req, res) => {
     });
 });
 
+//BACK COMMENTS
+app.get("/admin/comments", (req, res) => {
+    const sql = `
+  SELECT *
+  FROM comments
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 
 //FRONT CATS
 app.get("/cats", (req, res) => {
@@ -166,6 +178,18 @@ app.delete("/admin/cats/:id", (req, res) => {
     con.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'OK, Cat gone', type: 'success' } });
+    });
+});
+
+//BACK DELETE COMMENT
+app.delete("/admin/comments/:id", (req, res) => {
+    const sql = `
+    DELETE FROM comments
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'Comment was deleted', type: 'success' } });
     });
 });
 

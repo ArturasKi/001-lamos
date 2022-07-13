@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CatsCrud from "./Cats/Crud";
 import ProductsCrud from "./Products/Crud";
+import ComCrud from "./Com/Crud";
 import Nav from "./Nav";
 import BackContext from "./BackContext";
 import { v4 as uuidv4 } from "uuid";
@@ -24,6 +25,9 @@ function Back({ show }) {
   const [editProduct, setEditProduct] = useState(null);
   const [modalProduct, setModalProduct] = useState(null);
   const [deletePhoto, setDeletePhoto] = useState(null);
+
+  const [comments, setComments] = useState(null);
+  const [deleteCom, setDeleteCom] = useState(null);
   
 
   // READ CATEGORY
@@ -39,6 +43,14 @@ function Back({ show }) {
         .get("http://localhost:3003/admin/products", authConfig())
         .then((res) => setProducts(res.data));
     }, [lastUpdate]);
+
+    // READ COMMENT
+    useEffect(() => {
+      axios
+        .get("http://localhost:3003/admin/comments", authConfig())
+        .then((res) => setComments(res.data));
+    }, [lastUpdate]);
+    
 
   // CREATE CATEGORY
   useEffect(() => {
@@ -95,6 +107,20 @@ function Back({ show }) {
           showMessage({ text: error.message, type: "danger" });
         });
     }, [deletePhoto]);
+
+   // DELETE COMMENT
+    useEffect(() => {
+      if (null === deleteCom) return;
+      axios
+        .delete("http://localhost:3003/admin/comments/" + deleteCom.id, authConfig())
+        .then((res) => {
+          showMessage(res.data.msg);
+          setLastUpdate(Date.now()); // irasymas, update;
+        })
+        .catch((error) => {
+          showMessage({ text: error.message, type: "danger" });
+        });
+    }, [deleteCom]);
 
   // EDIT CATEGORY
   useEffect(() => {
@@ -166,7 +192,9 @@ function Back({ show }) {
         setEditProduct,
         setModalProduct,
         modalProduct,
-        setDeletePhoto
+        setDeletePhoto,
+        setDeleteCom,
+        comments
       }}
     >
       {show === "admin" ? (
@@ -176,6 +204,8 @@ function Back({ show }) {
         </>
       ) : show === "cats" ? (
         <CatsCrud />
+      )  : show === "com" ? (
+          <ComCrud />
       ) : show === "products" ? (
         <ProductsCrud />
       ) : null}

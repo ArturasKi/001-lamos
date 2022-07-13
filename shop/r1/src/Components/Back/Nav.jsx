@@ -24,6 +24,11 @@ function Nav() {
                             color: 'crimson'
                         } : undefined
                         }>Products</NavLink>
+                        <NavLink to="/admin/comments" className="nav-link" style={({ isActive }) => // funkcija gauna argumentą isActive, jei true vienas stilus, false - kitas;
+                        isActive ? {
+                            color: 'crimson'
+                        } : undefined
+                        }>Comments</NavLink>
                         <Link className="nav-link" to="/logout">Logout</Link>
                     </nav>
                 </div>
