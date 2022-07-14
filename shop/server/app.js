@@ -338,6 +338,29 @@ app.delete("/admin/photos/:id", (req, res) => {
     });
 });
 
+//FRONT CREATE CUR
+app.post("/admin/cur", (req, res) => {
+    let val = '';
+    for(const o in req.body.data) {
+        console.log(req.body.data[o]);
+        val += `('${req.body.data[o].code}', ${req.body.data[o].value})`;
+    }
+    val = val.slice(0, -1);
+        
+    const sql = `
+    INSERT INTO cur
+    (code, value)
+    VALUES ${val}
+    ON DUPLICATE KEY UPDATE
+    code = VALUES(code),
+    value = VALUES(value)
+    `;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send({ result });
+    });
+});
+
 app.listen(port, () => {
     console.log(`Bebras klauso porto Nr ${port}`);
 });

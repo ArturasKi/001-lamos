@@ -200,7 +200,11 @@ function Back({ show }) {
       {show === "admin" ? (
         <>
           <Nav />
-          <h1>WELCOME TO THE ADMINS CRIB</h1>
+          <div className='container col-2'>
+            <div className='row'>
+              <h1>WELCOME</h1>
+            </div>
+          </div>
         </>
       ) : show === "cats" ? (
         <CatsCrud />
